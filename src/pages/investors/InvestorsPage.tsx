@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, MapPin, CircleDollarSign } from 'lucide-react';
+import { Search, Filter, MapPin, CircleDollarSign, TrendingUp, Heart } from 'lucide-react';
 import { Input } from '../../components/ui/Input';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
@@ -54,11 +54,11 @@ export const InvestorsPage: React.FC = () => {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <h2 className="text-sm font-semibold text-gray-900">Filters</h2>
+                <div className="flex items-center gap-2"><Filter size={16} className="text-primary-600" /><h2 className="text-sm font-semibold text-gray-900">Filters</h2></div>
             </CardHeader>
             <CardBody className="space-y-5">
               <div>
-                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Stage</h3>
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><TrendingUp size={12} className="inline mr-1.5 text-primary-600" />Stage</h3>
                 <div className="space-y-1">
                   {allStages.map(stage => (
                     <button
@@ -70,14 +70,14 @@ export const InvestorsPage: React.FC = () => {
                           : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
-                      {stage}
+                      <TrendingUp size={14} className="inline mr-1.5 text-gray-400" />{stage}
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Interests</h3>
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><Heart size={12} className="inline mr-1.5 text-primary-600" />Interests</h3>
                 <div className="flex flex-wrap gap-1.5">
                   {allInterests.map(interest => (
                     <Badge
@@ -93,7 +93,7 @@ export const InvestorsPage: React.FC = () => {
               </div>
 
               <div>
-                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Location</h3>
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><MapPin size={12} className="inline mr-1.5 text-primary-600" />Location</h3>
                 <div className="space-y-1">
                   {['San Francisco, CA', 'New York, NY', 'Boston, MA'].map((loc, i) => (
                     <button key={i} className="flex items-center w-full text-left px-3 py-2 rounded text-sm text-gray-600 hover:bg-gray-50">

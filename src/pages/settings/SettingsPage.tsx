@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Lock, Bell, Globe, Palette, CreditCard, Smartphone, Monitor, Moon, Sun, Key, Shield, Mail, Clock, Paintbrush, FileText, Download } from 'lucide-react';
+import { User, Lock, Bell, Globe, Palette, CreditCard, Smartphone, Monitor, Moon, Sun, Key, Shield, Mail, Clock, Paintbrush, FileText, Download, LayoutGrid, Type } from 'lucide-react';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
@@ -329,7 +329,7 @@ const AppearanceSettings: React.FC = () => {
       <CardHeader><div className="flex items-center gap-2"><Palette size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Appearance</h2></div></CardHeader>
       <CardBody className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Theme Mode</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2"><Sun size={14} className="inline mr-1.5 text-primary-600" />Theme Mode</label>
           <div className="flex gap-3">
             {[
               { id: 'light', icon: Sun, label: 'Light' },
@@ -371,7 +371,7 @@ const AppearanceSettings: React.FC = () => {
         </div>
 
         <div className="pt-4 border-t border-gray-200">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Density</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2"><LayoutGrid size={14} className="inline mr-1.5 text-primary-600" />Density</label>
           <div className="flex gap-2">
             {[
               { id: 'compact', label: 'Compact' },
@@ -392,7 +392,7 @@ const AppearanceSettings: React.FC = () => {
         </div>
 
         <div className="pt-4 border-t border-gray-200">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Font Size</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2"><Type size={14} className="inline mr-1.5 text-primary-600" />Font Size</label>
           <div className="flex gap-2">
             {[
               { id: 'small', label: 'Small' },
