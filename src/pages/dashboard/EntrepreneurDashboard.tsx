@@ -11,6 +11,7 @@ import { CollaborationRequest, NotificationItem } from '../../types';
 import { getRequestsForEntrepreneur } from '../../data/collaborationRequests';
 import { getDealsForEntrepreneur } from '../../data/deals';
 import { getNotificationsForUser, getUnreadCount } from '../../data/notifications';
+import { getUpcomingMeetings } from '../../data/meetings';
 import { investors } from '../../data/users';
 
 const statStyles = {
@@ -27,12 +28,14 @@ export const EntrepreneurDashboard: React.FC = () => {
   const [unreadNotifs, setUnreadNotifs] = useState(0);
   const [recentNotifs, setRecentNotifs] = useState<NotificationItem[]>([]);
   const [showNotifs, setShowNotifs] = useState(false);
+  const [upcomingMeetings, setUpcomingMeetings] = useState<import('../../types').Meeting[]>([]);
 
   useEffect(() => {
     if (user) {
       setCollaborationRequests(getRequestsForEntrepreneur(user.id));
       setUnreadNotifs(getUnreadCount(user.id));
       setRecentNotifs(getNotificationsForUser(user.id).slice(0, 3));
+      setUpcomingMeetings(getUpcomingMeetings(user.id));
     }
   }, [user]);
 
@@ -207,6 +210,34 @@ export const EntrepreneurDashboard: React.FC = () => {
               Browse All Investors
             </Button>
           </Link>
+
+          {upcomingMeetings.length > 0 && (
+            <div className="pt-2">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Calendar size={16} className="text-primary-600" />
+                  <h3 className="text-sm font-semibold text-gray-900">Upcoming Meetings</h3>
+                  <Link to="/calendar" className="text-xs text-primary-600 hover:text-primary-700 font-medium">View all</Link>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {upcomingMeetings.map(m => (
+                  <Card key={m.id}>
+                    <CardBody className="p-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-gray-900">{m.title}</span>
+                        <Badge variant={m.status === 'confirmed' ? 'success' : 'warning'} size="sm">{m.status}</Badge>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <span>{m.date}</span>
+                        <span>{m.startTime}–{m.endTime}</span>
+                      </div>
+                    </CardBody>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

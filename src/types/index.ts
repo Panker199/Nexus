@@ -93,6 +93,19 @@ export interface Document {
   ownerId: string;
 }
 
+export interface Meeting {
+  id: string;
+  title: string;
+  organizerId: string;
+  participantId: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  status: 'pending' | 'confirmed' | 'cancelled' | 'declined';
+  message?: string;
+  createdAt: string;
+}
+
 export interface AuthContextType {
   user: User | null;
   login: (email: string, password: string, role: UserRole) => Promise<void>;

@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, PieChart, Search, PlusCircle, ArrowRight, Send, Bell, TrendingUp } from 'lucide-react';
+import { Users, PieChart, Search, PlusCircle, ArrowRight, Send, Bell, TrendingUp, Calendar, Briefcase } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card, CardBody } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { Badge } from '../../components/ui/Badge';
+import { GoogleIcon } from '../../components/ui/GoogleIcon';
 import { EntrepreneurCard } from '../../components/entrepreneur/EntrepreneurCard';
 import { CollaborationRequestCard } from '../../components/collaboration/CollaborationRequestCard';
 import { useAuth } from '../../context/AuthContext';
-import { CollaborationRequest, NotificationItem } from '../../types';
+import { CollaborationRequest, NotificationItem, Meeting } from '../../types';
 import { entrepreneurs } from '../../data/users';
 import { getRequestsFromInvestor } from '../../data/collaborationRequests';
 import { getDealsForInvestor } from '../../data/deals';
 import { getNotificationsForUser, getUnreadCount } from '../../data/notifications';
+import { getUpcomingMeetings } from '../../data/meetings';
 
 const statStyles = {
   primary: { bg: 'bg-primary-50', icon: 'text-primary-600', label: 'text-primary-700', value: 'text-primary-900' },
@@ -30,12 +32,14 @@ export const InvestorDashboard: React.FC = () => {
   const [unreadNotifs, setUnreadNotifs] = useState(0);
   const [recentNotifs, setRecentNotifs] = useState<NotificationItem[]>([]);
   const [showNotifs, setShowNotifs] = useState(false);
+  const [upcomingMeetings, setUpcomingMeetings] = useState<Meeting[]>([]);
 
   useEffect(() => {
     if (user) {
       setSentRequests(getRequestsFromInvestor(user.id));
       setUnreadNotifs(getUnreadCount(user.id));
       setRecentNotifs(getNotificationsForUser(user.id).slice(0, 3));
+      setUpcomingMeetings(getUpcomingMeetings(user.id));
     }
   }, [user]);
 
@@ -60,6 +64,12 @@ export const InvestorDashboard: React.FC = () => {
   };
 
   const industries = Array.from(new Set(entrepreneurs.map(e => e.industry)));
+  const industryIcon: Record<string, string> = {
+    FinTech: 'account_balance',
+    CleanTech: 'energy_savings_leaf',
+    HealthTech: 'biotech',
+    AgTech: 'agriculture',
+  };
   const deals = getDealsForInvestor(user.id);
   const acceptedCount = sentRequests.filter(r => r.status === 'accepted').length;
   const pendingCount = sentRequests.filter(r => r.status === 'pending').length;
@@ -216,6 +226,7 @@ export const InvestorDashboard: React.FC = () => {
                     className="cursor-pointer select-none"
                     onClick={() => toggleIndustry(industry)}
                   >
+                    <GoogleIcon icon={industryIcon[industry] ?? 'business'} size={14} className="mr-0.5" />
                     {industry}
                   </Badge>
                 ))}
@@ -289,6 +300,34 @@ export const InvestorDashboard: React.FC = () => {
                   <div className="flex justify-between text-xs text-gray-500">
                     <span>{deal.amount}</span>
                     <span>{deal.equity} equity</span>
+                  </div>
+                </CardBody>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {upcomingMeetings.length > 0 && !showRequests && (
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Calendar size={18} className="text-primary-600" />
+              <h2 className="text-lg font-semibold text-gray-900">Upcoming Meetings</h2>
+              <Link to="/calendar" className="text-sm text-primary-600 hover:text-primary-700 font-medium">View all</Link>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger-list">
+            {upcomingMeetings.map(m => (
+              <Card key={m.id}>
+                <CardBody className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold text-gray-900">{m.title}</span>
+                    <Badge variant={m.status === 'confirmed' ? 'success' : 'warning'} size="sm">{m.status}</Badge>
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-500">
+                    <span>{m.date}</span>
+                    <span>{m.startTime}–{m.endTime}</span>
                   </div>
                 </CardBody>
               </Card>
