@@ -97,6 +97,7 @@ function App() {
           
           <Route path="/video-call" element={<DashboardLayout />}>
             <Route index element={<VideoCallPage />} />
+            <Route path=":userId" element={<VideoCallPage />} />
           </Route>
           
           {/* Chat Routes */}

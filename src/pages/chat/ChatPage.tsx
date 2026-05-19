@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Send, Phone, Video, Info, Smile } from 'lucide-react';
 import { Avatar } from '../../components/ui/Avatar';
 import { Button } from '../../components/ui/Button';
@@ -19,6 +19,7 @@ export const ChatPage: React.FC = () => {
   const [conversations, setConversations] = useState<any[]>([]);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
+  const navigate = useNavigate();
   const chatPartner = userId ? findUserById(userId) : null;
 
   useEffect(() => {
@@ -75,8 +76,8 @@ export const ChatPage: React.FC = () => {
                 </div>
               </div>
               <div className="flex gap-1">
-                <Button variant="ghost" size="sm" aria-label="Voice call"><Phone size={18} /></Button>
-                <Button variant="ghost" size="sm" aria-label="Video call"><Video size={18} /></Button>
+                <Button variant="ghost" size="sm" aria-label="Voice call" onClick={() => navigate(`/video-call/${userId}`)}><Phone size={18} /></Button>
+                <Button variant="ghost" size="sm" aria-label="Video call" onClick={() => navigate(`/video-call/${userId}`)}><Video size={18} /></Button>
                 <Button variant="ghost" size="sm" aria-label="Info"><Info size={18} /></Button>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Video, VideoOff, Mic, MicOff, Phone, PhoneOff, MonitorUp,
   Users, Clock
@@ -8,15 +9,18 @@ import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Avatar } from '../../components/ui/Avatar';
 import { useAuth } from '../../context/AuthContext';
-import { users } from '../../data/users';
+import { findUserById, users } from '../../data/users';
 
 type CallState = 'idle' | 'calling' | 'connected' | 'ended';
 
 const VideoCallPage: React.FC = () => {
   const { user } = useAuth();
+  const { userId } = useParams<{ userId: string }>();
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const [callState, setCallState] = useState<CallState>('idle');
-  const [selectedUser, setSelectedUser] = useState<typeof users[0] | null>(null);
+  const [selectedUser, setSelectedUser] = useState<typeof users[0] | null>(
+    userId ? findUserById(userId) ?? null : null,
+  );
   const [cameraOn, setCameraOn] = useState(true);
   const [micOn, setMicOn] = useState(true);
   const [screenShare, setScreenShare] = useState(false);
@@ -26,6 +30,12 @@ const VideoCallPage: React.FC = () => {
   const timerRef = useRef<ReturnType<typeof setInterval>>();
 
   const otherUsers = users.filter(u => u.id !== user?.id);
+
+  useEffect(() => {
+    if (userId && selectedUser && callState === 'idle') {
+      startCall();
+    }
+  }, []);
 
   useEffect(() => {
     if (callState === 'connected' && !timerRef.current) {
