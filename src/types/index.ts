@@ -111,6 +111,20 @@ export interface Meeting {
   createdAt: string;
 }
 
+export type TransactionStatus = 'completed' | 'pending' | 'failed';
+export type TransactionType = 'deposit' | 'withdraw' | 'transfer' | 'funding';
+
+export interface Transaction {
+  id: string;
+  type: TransactionType;
+  amount: string;
+  senderId: string;
+  receiverId: string;
+  description: string;
+  status: TransactionStatus;
+  createdAt: string;
+}
+
 export interface AuthContextType {
   user: User | null;
   login: (email: string, password: string, role: UserRole) => Promise<void>;

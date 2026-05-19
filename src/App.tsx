@@ -30,6 +30,7 @@ import { HelpPage } from './pages/help/HelpPage';
 import { DealsPage } from './pages/deals/DealsPage';
 import CalendarPage from './pages/calendar/CalendarPage';
 import VideoCallPage from './pages/video/VideoCallPage';
+import PaymentPage from './pages/payments/PaymentPage';
 
 // Chat Pages
 import { ChatPage } from './pages/chat/ChatPage';
@@ -98,6 +99,10 @@ function App() {
           <Route path="/video-call" element={<DashboardLayout />}>
             <Route index element={<VideoCallPage />} />
             <Route path=":userId" element={<VideoCallPage />} />
+          </Route>
+          
+          <Route path="/payments" element={<DashboardLayout />}>
+            <Route index element={<PaymentPage />} />
           </Route>
           
           {/* Chat Routes */}

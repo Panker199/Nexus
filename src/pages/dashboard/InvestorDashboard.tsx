@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, PieChart, Search, PlusCircle, ArrowRight, Send, Bell, TrendingUp, Calendar, Briefcase } from 'lucide-react';
+import { Users, PieChart, Search, PlusCircle, ArrowRight, Send, Bell, TrendingUp, Calendar, Briefcase, Wallet } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card, CardBody } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
@@ -15,6 +15,7 @@ import { getRequestsFromInvestor } from '../../data/collaborationRequests';
 import { getDealsForInvestor } from '../../data/deals';
 import { getNotificationsForUser, getUnreadCount } from '../../data/notifications';
 import { getUpcomingMeetings } from '../../data/meetings';
+import { getWalletBalance } from '../../data/payments';
 
 const statStyles = {
   primary: { bg: 'bg-primary-50', icon: 'text-primary-600', label: 'text-primary-700', value: 'text-primary-900' },
@@ -72,6 +73,7 @@ export const InvestorDashboard: React.FC = () => {
   };
   const deals = getDealsForInvestor(user.id);
   const acceptedCount = sentRequests.filter(r => r.status === 'accepted').length;
+  const walletBalance = getWalletBalance(user.id);
   const pendingCount = sentRequests.filter(r => r.status === 'pending').length;
 
   const toggleIndustry = (industry: string) => {
@@ -84,6 +86,7 @@ export const InvestorDashboard: React.FC = () => {
     { label: 'Total Startups', value: entrepreneurs.length, icon: Users, color: 'primary' as const },
     { label: 'Industries', value: industries.length, icon: PieChart, color: 'secondary' as const },
     { label: 'Connections', value: acceptedCount, icon: TrendingUp, color: 'accent' as const },
+    { label: 'Wallet Balance', value: `$${walletBalance}`, icon: Wallet, color: 'success' as const },
   ];
 
   return (

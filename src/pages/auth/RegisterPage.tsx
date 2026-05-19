@@ -4,6 +4,7 @@ import { User, Mail, Lock, CircleDollarSign, Building2, AlertCircle, Sparkles } 
 import { useAuth } from '../../context/AuthContext';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
+import { PasswordStrengthMeter } from '../../components/ui/SecurityInputs';
 import { UserRole } from '../../types';
 
 export const RegisterPage: React.FC = () => {
@@ -95,6 +96,7 @@ export const RegisterPage: React.FC = () => {
             <Input label="Full name" type="text" value={name} onChange={(e) => setName(e.target.value)} required fullWidth startAdornment={<User size={18} />} />
             <Input label="Email address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required fullWidth startAdornment={<Mail size={18} />} />
             <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required fullWidth startAdornment={<Lock size={18} />} />
+            <PasswordStrengthMeter password={password} />
             <Input label="Confirm password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required fullWidth startAdornment={<Lock size={18} />} />
 
             <label className="flex items-start gap-2.5 cursor-pointer">

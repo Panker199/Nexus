@@ -5,6 +5,7 @@ import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Avatar } from '../../components/ui/Avatar';
+import { PasswordStrengthMeter } from '../../components/ui/SecurityInputs';
 import { useAuth } from '../../context/AuthContext';
 import { Themes } from './Themes/Themes';
 
@@ -112,7 +113,10 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => (
 );
 
 /* ─── Security ─────────────────────────────────────────── */
-const SecuritySettings: React.FC = () => (
+const SecuritySettings: React.FC = () => {
+  const [newPw, setNewPw] = useState('');
+
+  return (
   <Card>
     <CardHeader><div className="flex items-center gap-2"><GoogleIcon icon="lock" size={20} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Security</h2></div></CardHeader>
     <CardBody className="space-y-6">
@@ -131,7 +135,8 @@ const SecuritySettings: React.FC = () => (
         <div className="flex items-center gap-2 mb-4"><GoogleIcon icon="key" size={18} className="text-primary-600" /><h3 className="text-sm font-medium text-gray-900">Change Password</h3></div>
         <div className="space-y-4 max-w-md">
           <Input label="Current Password" type="password" />
-          <Input label="New Password" type="password" />
+          <Input label="New Password" type="password" value={newPw} onChange={e => setNewPw(e.target.value)} />
+          <PasswordStrengthMeter password={newPw} />
           <Input label="Confirm New Password" type="password" />
           <div className="flex justify-end"><Button>Update Password</Button></div>
         </div>
@@ -159,7 +164,8 @@ const SecuritySettings: React.FC = () => (
       </div>
     </CardBody>
   </Card>
-);
+  );
+};
 
 /* ─── Notifications ─────────────────────────────────────── */
 const NotificationSettings: React.FC = () => {
@@ -348,17 +354,24 @@ const BillingSettings: React.FC = () => {
             <Button variant="outline" size="sm">Add Card</Button>
           </div>
         </CardHeader>
-        <CardBody>
-          <div className="flex items-center justify-between p-3 rounded border border-gray-200">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-7 rounded bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-700">VI</div>
-              <div>
-                <p className="text-sm font-medium text-gray-900">Visa ending in 4242</p>
-                <p className="text-xs text-gray-500">Expires 12/2027</p>
+        <CardBody className="space-y-3">
+          {[
+            { brand: 'Visa', last4: '4242', expires: '12/2027', color: 'bg-blue-100 text-blue-600', default: true },
+            { brand: 'Mastercard', last4: '8888', expires: '08/2028', color: 'bg-orange-100 text-orange-600', default: false },
+          ].map((card, i) => (
+            <div key={i} className="flex items-center justify-between p-3 rounded border border-gray-200">
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-7 rounded ${card.color} flex items-center justify-center`}>
+                  <GoogleIcon icon="credit_card" size={18} />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">{card.brand} ending in {card.last4}</p>
+                  <p className="text-xs text-gray-500">Expires {card.expires}</p>
+                </div>
               </div>
+              {card.default && <Badge variant="primary" size="sm">Default</Badge>}
             </div>
-            <Badge variant="primary" size="sm">Default</Badge>
-          </div>
+          ))}
         </CardBody>
       </Card>
 

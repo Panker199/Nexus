@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Bell, Calendar, TrendingUp, PlusCircle, ArrowRight, Briefcase } from 'lucide-react';
+import { Users, Bell, Calendar, TrendingUp, PlusCircle, ArrowRight, Briefcase, Wallet } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card, CardBody } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
@@ -12,6 +12,7 @@ import { getRequestsForEntrepreneur } from '../../data/collaborationRequests';
 import { getDealsForEntrepreneur } from '../../data/deals';
 import { getNotificationsForUser, getUnreadCount } from '../../data/notifications';
 import { getUpcomingMeetings } from '../../data/meetings';
+import { getWalletBalance } from '../../data/payments';
 import { investors } from '../../data/users';
 
 const statStyles = {
@@ -51,12 +52,13 @@ export const EntrepreneurDashboard: React.FC = () => {
 
   const pendingRequests = collaborationRequests.filter(req => req.status === 'pending');
   const deals = getDealsForEntrepreneur(user.id);
+  const walletBalance = getWalletBalance(user.id);
 
   const stats = [
     { label: 'Pending Requests', value: pendingRequests.length, icon: Bell, color: 'primary' as const },
     { label: 'Connections', value: collaborationRequests.filter(r => r.status === 'accepted').length, icon: Users, color: 'secondary' as const },
     { label: 'Active Deals', value: deals.length, icon: Briefcase, color: 'accent' as const },
-    { label: 'Profile Views', value: '24', icon: TrendingUp, color: 'success' as const },
+    { label: 'Wallet Balance', value: `$${walletBalance}`, icon: Wallet, color: 'success' as const },
   ];
 
   return (

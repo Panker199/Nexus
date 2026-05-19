@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, CircleDollarSign, Building2, LogIn, AlertCircle, Sparkles } from 'lucide-react';
+import { User, CircleDollarSign, Building2, LogIn, AlertCircle, Sparkles, Shield } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
+import { OtpInput } from '../../components/ui/SecurityInputs';
 import { UserRole } from '../../types';
 
 export const LoginPage: React.FC = () => {
@@ -12,6 +13,8 @@ export const LoginPage: React.FC = () => {
   const [role, setRole] = useState<UserRole>('entrepreneur');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showOtp, setShowOtp] = useState(false);
+  const [otp, setOtp] = useState('');
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -19,6 +22,10 @@ export const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    if (!showOtp) {
+      setShowOtp(true);
+      return;
+    }
     setIsLoading(true);
     try {
       await login(email, password, role);
@@ -28,6 +35,8 @@ export const LoginPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  const resetOtp = () => { setShowOtp(false); setOtp(''); };
 
   const fillDemoCredentials = (userRole: UserRole) => {
     if (userRole === 'entrepreneur') {
@@ -116,21 +125,25 @@ export const LoginPage: React.FC = () => {
               fullWidth
             />
 
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                />
-                <span className="text-sm text-gray-600">Remember me</span>
-              </label>
-              <Link to="/forgot-password" className="text-sm font-medium text-primary-600 hover:text-primary-700">
-                Forgot password?
-              </Link>
-            </div>
+            {showOtp && (
+              <div className="space-y-4 p-4 rounded bg-gray-50 border border-gray-200">
+                <div className="flex items-center gap-2">
+                  <Shield size={18} className="text-primary-600" />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">Two-Factor Authentication</p>
+                    <p className="text-xs text-gray-500">Enter the 6-digit code sent to your device</p>
+                  </div>
+                </div>
+                <OtpInput value={otp} onChange={setOtp} />
+                <div className="flex justify-between">
+                  <button type="button" onClick={resetOtp} className="text-xs text-gray-500 hover:text-gray-700 underline">Back to login</button>
+                  <button type="button" className="text-xs text-primary-600 hover:text-primary-700 underline">Resend code</button>
+                </div>
+              </div>
+            )}
 
-            <Button type="submit" fullWidth isLoading={isLoading} leftIcon={<LogIn size={18} />}>
-              Sign in
+            <Button type="submit" fullWidth isLoading={isLoading} leftIcon={showOtp ? <Shield size={18} /> : <LogIn size={18} />}>
+              {showOtp ? 'Verify & Sign In' : 'Sign in'}
             </Button>
           </form>
 
