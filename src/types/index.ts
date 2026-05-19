@@ -53,8 +53,33 @@ export interface CollaborationRequest {
   investorId: string;
   entrepreneurId: string;
   message: string;
-  status: 'pending' | 'accepted' | 'rejected';
+  status: 'pending' | 'accepted' | 'rejected' | 'canceled';
   createdAt: string;
+}
+
+export interface Deal {
+  id: string;
+  requestId: string;
+  startupName: string;
+  investorId: string;
+  entrepreneurId: string;
+  amount: string;
+  equity: string;
+  status: string;
+  stage: string;
+  lastActivity: string;
+  createdAt: string;
+}
+
+export interface NotificationItem {
+  id: string;
+  userId: string;
+  type: 'message' | 'connection' | 'deal' | 'request_sent' | 'request_accepted' | 'request_declined';
+  fromUserId: string;
+  content: string;
+  isRead: boolean;
+  createdAt: string;
+  link?: string;
 }
 
 export interface Document {

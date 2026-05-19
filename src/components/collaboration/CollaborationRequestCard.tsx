@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, X, MessageCircle } from 'lucide-react';
+import { Check, X, MessageCircle, Ban } from 'lucide-react';
 import { CollaborationRequest } from '../../types';
 import { Card, CardBody, CardFooter } from '../ui/Card';
 import { Avatar } from '../ui/Avatar';
@@ -12,17 +12,23 @@ import { formatDistanceToNow } from 'date-fns';
 
 interface CollaborationRequestCardProps {
   request: CollaborationRequest;
-  onStatusUpdate?: (requestId: string, status: 'accepted' | 'rejected') => void;
+  onStatusUpdate?: (requestId: string, status: 'accepted' | 'rejected' | 'canceled') => void;
+  isInvestorView?: boolean;
 }
 
 export const CollaborationRequestCard: React.FC<CollaborationRequestCardProps> = ({
   request,
-  onStatusUpdate
+  onStatusUpdate,
+  isInvestorView = false
 }) => {
   const navigate = useNavigate();
-  const investor = findUserById(request.investorId);
+  const counterparty = findUserById(isInvestorView ? request.entrepreneurId : request.investorId);
+  const profileRoute = isInvestorView
+    ? `/profile/entrepreneur/${request.entrepreneurId}`
+    : `/profile/investor/${request.investorId}`;
+  const chatRoute = isInvestorView ? `/chat/${request.entrepreneurId}` : `/chat/${request.investorId}`;
 
-  if (!investor) return null;
+  if (!counterparty) return null;
 
   const handleAccept = () => {
     updateRequestStatus(request.id, 'accepted');
@@ -34,14 +40,20 @@ export const CollaborationRequestCard: React.FC<CollaborationRequestCardProps> =
     onStatusUpdate?.(request.id, 'rejected');
   };
 
-  const handleMessage = () => navigate(`/chat/${investor.id}`);
-  const handleViewProfile = () => navigate(`/profile/investor/${investor.id}`);
+  const handleCancel = () => {
+    updateRequestStatus(request.id, 'canceled');
+    onStatusUpdate?.(request.id, 'canceled');
+  };
+
+  const handleMessage = () => navigate(chatRoute);
+  const handleViewProfile = () => navigate(profileRoute);
 
   const statusBadge = () => {
     switch (request.status) {
       case 'pending': return <Badge variant="warning" dot pulse>Pending</Badge>;
       case 'accepted': return <Badge variant="success" dot>Accepted</Badge>;
       case 'rejected': return <Badge variant="error">Declined</Badge>;
+      case 'canceled': return <Badge variant="gray">Canceled</Badge>;
       default: return null;
     }
   };
@@ -50,10 +62,10 @@ export const CollaborationRequestCard: React.FC<CollaborationRequestCardProps> =
     <Card className="hover:shadow-soft-lg transition-all duration-300">
       <CardBody className="flex flex-col sm:flex-row sm:items-start gap-4">
         <div className="flex items-start gap-3 flex-1">
-          <Avatar src={investor.avatarUrl} alt={investor.name} size="md" status={investor.isOnline ? 'online' : 'offline'} />
+          <Avatar src={counterparty.avatarUrl} alt={counterparty.name} size="md" status={counterparty.isOnline ? 'online' : 'offline'} />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-sm font-semibold text-gray-900">{investor.name}</h3>
+              <h3 className="text-sm font-semibold text-gray-900">{counterparty.name}</h3>
               <span className="text-xs text-gray-400">{formatDistanceToNow(new Date(request.createdAt), { addSuffix: true })}</span>
             </div>
             <p className="text-sm text-gray-600 leading-relaxed">{request.message}</p>
@@ -65,7 +77,7 @@ export const CollaborationRequestCard: React.FC<CollaborationRequestCardProps> =
       </CardBody>
 
       <CardFooter className="bg-gray-50/50 border-t border-gray-100">
-        {request.status === 'pending' ? (
+        {request.status === 'pending' && !isInvestorView && (
           <div className="flex justify-between w-full">
             <div className="flex gap-2">
               <Button variant="outline" size="sm" leftIcon={<X size={16} />} onClick={handleReject}>Decline</Button>
@@ -73,7 +85,14 @@ export const CollaborationRequestCard: React.FC<CollaborationRequestCardProps> =
             </div>
             <Button variant="ghost" size="sm" leftIcon={<MessageCircle size={16} />} onClick={handleMessage}>Message</Button>
           </div>
-        ) : (
+        )}
+        {request.status === 'pending' && isInvestorView && (
+          <div className="flex justify-between w-full">
+            <Button variant="outline" size="sm" leftIcon={<Ban size={16} />} onClick={handleCancel}>Cancel Request</Button>
+            <Button variant="ghost" size="sm" onClick={handleViewProfile}>View Profile</Button>
+          </div>
+        )}
+        {request.status !== 'pending' && (
           <div className="flex justify-between w-full">
             <Button variant="outline" size="sm" leftIcon={<MessageCircle size={16} />} onClick={handleMessage}>Message</Button>
             <Button variant="ghost" size="sm" onClick={handleViewProfile}>View Profile</Button>

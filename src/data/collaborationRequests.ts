@@ -1,4 +1,6 @@
 import { CollaborationRequest } from '../types';
+import { createDealFromAcceptedRequest } from './deals';
+import { notifyRequestSent, notifyRequestAccepted, notifyRequestDeclined } from './notifications';
 
 export const collaborationRequests: CollaborationRequest[] = [
   {
@@ -43,34 +45,48 @@ export const collaborationRequests: CollaborationRequest[] = [
   }
 ];
 
-// Helper function to get collaboration requests for an entrepreneur
 export const getRequestsForEntrepreneur = (entrepreneurId: string): CollaborationRequest[] => {
   return collaborationRequests
     .filter(request => request.entrepreneurId === entrepreneurId)
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 };
 
-// Helper function to get collaboration requests sent by an investor
 export const getRequestsFromInvestor = (investorId: string): CollaborationRequest[] => {
   return collaborationRequests
     .filter(request => request.investorId === investorId)
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 };
 
-// Helper function to update a collaboration request status
-export const updateRequestStatus = (requestId: string, newStatus: 'pending' | 'accepted' | 'rejected'): CollaborationRequest | null => {
+export const getAllRequestsForUser = (userId: string): CollaborationRequest[] => {
+  return collaborationRequests
+    .filter(request => request.investorId === userId || request.entrepreneurId === userId)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+};
+
+export const updateRequestStatus = (requestId: string, newStatus: 'pending' | 'accepted' | 'rejected' | 'canceled'): CollaborationRequest | null => {
   const requestIndex = collaborationRequests.findIndex(req => req.id === requestId);
   if (requestIndex === -1) return null;
-  
+
+  const prevStatus = collaborationRequests[requestIndex].status;
   collaborationRequests[requestIndex] = {
     ...collaborationRequests[requestIndex],
     status: newStatus
   };
-  
-  return collaborationRequests[requestIndex];
+
+  const req = collaborationRequests[requestIndex];
+
+  if (prevStatus !== 'accepted' && newStatus === 'accepted') {
+    createDealFromAcceptedRequest(req.id, req.investorId, req.entrepreneurId);
+    notifyRequestAccepted(req.investorId, req.entrepreneurId);
+  }
+
+  if (prevStatus !== 'rejected' && newStatus === 'rejected') {
+    notifyRequestDeclined(req.investorId, req.entrepreneurId);
+  }
+
+  return req;
 };
 
-// Helper function to create a new collaboration request
 export const createCollaborationRequest = (
   investorId: string,
   entrepreneurId: string,
@@ -84,7 +100,8 @@ export const createCollaborationRequest = (
     status: 'pending',
     createdAt: new Date().toISOString()
   };
-  
+
   collaborationRequests.push(newRequest);
+  notifyRequestSent(investorId, entrepreneurId);
   return newRequest;
 };

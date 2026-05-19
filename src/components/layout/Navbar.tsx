@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Menu, X, Bell, MessageCircle, User, LogOut, Building2, CircleDollarSign, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Avatar } from '../ui/Avatar';
 import { Button } from '../ui/Button';
+import { getUnreadCount } from '../../data/notifications';
 
 export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [notifCount, setNotifCount] = useState(0);
+
+  useEffect(() => {
+    if (user) {
+      setNotifCount(getUnreadCount(user.id));
+      const interval = setInterval(() => setNotifCount(getUnreadCount(user.id)), 10000);
+      return () => clearInterval(interval);
+    }
+  }, [user]);
 
   const handleLogout = () => {
     logout();
@@ -35,7 +45,16 @@ export const Navbar: React.FC = () => {
       path: user ? '/messages' : '/login',
     },
     {
-      icon: <Bell size={18} />,
+      icon: (
+        <div className="relative">
+          <Bell size={18} />
+          {notifCount > 0 && (
+            <span className="absolute -top-2 -right-2 inline-flex items-center justify-center w-4 h-4 text-[8px] font-bold text-white bg-error-500 rounded-full">
+              {notifCount > 9 ? '9+' : notifCount}
+            </span>
+          )}
+        </div>
+      ),
       text: 'Notifications',
       path: user ? '/notifications' : '/login',
     },

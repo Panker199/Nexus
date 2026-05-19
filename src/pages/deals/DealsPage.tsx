@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { Search, Filter, DollarSign, TrendingUp, Users, Calendar, Plus } from 'lucide-react';
+import { Search, DollarSign, TrendingUp, Users, Calendar, Plus } from 'lucide-react';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Avatar } from '../../components/ui/Avatar';
+import { useAuth } from '../../context/AuthContext';
+import { deals, updateDealStatus } from '../../data/deals';
+import { findUserById } from '../../data/users';
+import { Deal } from '../../types';
 
 const statStyles = {
   primary: { bg: 'from-primary-500/10 to-primary-600/5', icon: 'text-primary-600', label: 'text-primary-700', value: 'text-primary-900' },
@@ -13,23 +17,8 @@ const statStyles = {
   success: { bg: 'from-success-500/10 to-success-600/5', icon: 'text-success-600', label: 'text-success-700', value: 'text-success-900' },
 } as const;
 
-interface Deal {
-  id: number;
-  startup: { name: string; logo: string; industry: string };
-  amount: string;
-  equity: string;
-  status: string;
-  stage: string;
-  lastActivity: string;
-}
-
-const allDeals: Deal[] = [
-  { id: 1, startup: { name: 'TechWave AI', logo: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg', industry: 'FinTech' }, amount: '$1.5M', equity: '15%', status: 'Due Diligence', stage: 'Series A', lastActivity: '2024-02-15' },
-  { id: 2, startup: { name: 'GreenLife Solutions', logo: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg', industry: 'CleanTech' }, amount: '$2M', equity: '20%', status: 'Term Sheet', stage: 'Seed', lastActivity: '2024-02-10' },
-  { id: 3, startup: { name: 'HealthPulse', logo: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg', industry: 'HealthTech' }, amount: '$800K', equity: '12%', status: 'Negotiation', stage: 'Pre-seed', lastActivity: '2024-02-05' },
-];
-
 export const DealsPage: React.FC = () => {
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
 
@@ -50,20 +39,27 @@ export const DealsPage: React.FC = () => {
     return map[status] || 'gray';
   };
 
-  const filteredDeals = allDeals.filter(deal => {
+  const userDeals = user
+    ? deals.filter(d => d.investorId === user.id || d.entrepreneurId === user.id)
+    : [];
+
+  const filteredDeals = userDeals.filter(deal => {
     const matchesSearch = searchQuery === '' ||
-      deal.startup.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      deal.startup.industry.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      deal.status.toLowerCase().includes(searchQuery.toLowerCase());
+      deal.startupName.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = selectedStatus.length === 0 || selectedStatus.includes(deal.status);
     return matchesSearch && matchesStatus;
   });
 
+  const totalInvestment = userDeals.reduce((sum, d) => {
+    const num = parseFloat(d.amount.replace(/[$,MK]/g, m => m === 'M' ? '' : m === 'K' ? '' : ''));
+    return sum + (isNaN(num) ? 0 : num * (d.amount.includes('M') ? 1 : d.amount.includes('K') ? 0.001 : 0));
+  }, 0);
+
   const stats = [
-    { label: 'Total Investment', value: '$4.3M', icon: DollarSign, color: 'primary' as const },
-    { label: 'Active Deals', value: '8', icon: TrendingUp, color: 'secondary' as const },
-    { label: 'Portfolio Companies', value: '12', icon: Users, color: 'accent' as const },
-    { label: 'Closed This Month', value: '2', icon: Calendar, color: 'success' as const },
+    { label: 'Total Investment', value: `$${totalInvestment.toFixed(1)}M`, icon: DollarSign, color: 'primary' as const },
+    { label: 'Active Deals', value: userDeals.filter(d => !['Closed', 'Passed'].includes(d.status)).length.toString(), icon: TrendingUp, color: 'secondary' as const },
+    { label: 'Portfolio Companies', value: new Set(userDeals.map(d => d.startupName)).size.toString(), icon: Users, color: 'accent' as const },
+    { label: 'Deals Pending', value: userDeals.filter(d => d.status === 'Due Diligence').length.toString(), icon: Calendar, color: 'success' as const },
   ];
 
   return (
@@ -73,7 +69,6 @@ export const DealsPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900">Deals</h1>
           <p className="text-gray-500 mt-0.5">Manage your investment pipeline</p>
         </div>
-        <Button leftIcon={<Plus size={18} />}>Add Deal</Button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -101,7 +96,7 @@ export const DealsPage: React.FC = () => {
       <Card>
         <CardBody className="space-y-4">
           <Input
-            placeholder="Search deals by startup or industry..."
+            placeholder="Search deals by startup..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             startAdornment={<Search size={18} />}
@@ -154,10 +149,13 @@ export const DealsPage: React.FC = () => {
                     <tr key={deal.id} className="hover:bg-gray-50/50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-3">
-                          <Avatar src={deal.startup.logo} alt={deal.startup.name} size="sm" />
+                          <Avatar
+                            src={findUserById(deal.entrepreneurId)?.avatarUrl || ''}
+                            alt={deal.startupName}
+                            size="sm"
+                          />
                           <div>
-                            <div className="text-sm font-medium text-gray-900">{deal.startup.name}</div>
-                            <div className="text-xs text-gray-500">{deal.startup.industry}</div>
+                            <div className="text-sm font-medium text-gray-900">{deal.startupName}</div>
                           </div>
                         </div>
                       </td>
@@ -180,15 +178,11 @@ export const DealsPage: React.FC = () => {
             </div>
           ) : (
             <div className="text-center py-10">
-              <p className="text-sm text-gray-500">No deals match your filters</p>
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-3"
-                onClick={() => { setSearchQuery(''); setSelectedStatus([]); }}
-              >
-                Clear filters
-              </Button>
+              <div className="mx-auto w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center mb-3">
+                <DollarSign size={24} className="text-gray-400" />
+              </div>
+              <p className="text-sm text-gray-500">No deals yet</p>
+              <p className="text-xs text-gray-400 mt-1">Deals are automatically created when collaboration requests are accepted</p>
             </div>
           )}
         </CardBody>
