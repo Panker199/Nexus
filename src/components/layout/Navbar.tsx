@@ -61,21 +61,18 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-sm transition-transform duration-200 group-hover:scale-105">
+            <Link to="/" className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded bg-primary-600 flex items-center justify-center">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
                   <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M16 21V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <span className="text-lg font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                Nexus
-              </span>
+              <span className="text-lg font-bold text-gray-900">Nexus</span>
             </Link>
           </div>
 
@@ -87,7 +84,7 @@ export const Navbar: React.FC = () => {
                   <Link
                     key={index}
                     to={link.path}
-                    className="inline-flex items-center gap-2 px-3.5 py-2 text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-primary-50/60 rounded-lg transition-all duration-200"
+                    className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded"
                   >
                     {link.icon}
                     {link.text}
@@ -98,7 +95,7 @@ export const Navbar: React.FC = () => {
 
                 <Link
                   to={profileRoute}
-                  className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
+                  className="flex items-center gap-2.5 px-3 py-1.5 rounded hover:bg-gray-100"
                 >
                   <Avatar
                     src={user.avatarUrl}
@@ -107,12 +104,12 @@ export const Navbar: React.FC = () => {
                     status={user.isOnline ? 'online' : 'offline'}
                     ring
                   />
-                  <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{user.name}</span>
+                  <span className="text-sm font-medium text-gray-700">{user.name}</span>
                 </Link>
 
                 <button
                   onClick={handleLogout}
-                  className="ml-1 p-2 text-gray-400 hover:text-error-600 hover:bg-error-50 rounded-lg transition-all duration-200"
+                  className="ml-1 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded"
                   title="Logout"
                 >
                   <LogOut size={18} />
@@ -130,7 +127,7 @@ export const Navbar: React.FC = () => {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200"
+              className="p-2 rounded text-gray-600 hover:text-gray-900 hover:bg-gray-100"
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -140,11 +137,11 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden border-t border-gray-100 bg-white animate-fade-in-down">
+        <div className="md:hidden border-t border-gray-200 bg-white">
           <div className="px-4 py-3 space-y-1">
             {user ? (
               <>
-                <div className="flex items-center gap-3 px-3 py-3 mb-2 bg-gray-50 rounded-xl">
+                <div className="flex items-center gap-3 px-3 py-3 mb-2 bg-gray-50 rounded">
                   <Avatar src={user.avatarUrl} alt={user.name} size="md" status={user.isOnline ? 'online' : 'offline'} />
                   <div>
                     <p className="text-sm font-semibold text-gray-900">{user.name}</p>
@@ -156,7 +153,7 @@ export const Navbar: React.FC = () => {
                   <Link
                     key={index}
                     to={link.path}
-                    className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-all duration-200"
+                    className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.icon}
@@ -166,17 +163,17 @@ export const Navbar: React.FC = () => {
 
                 <Link
                   to={profileRoute}
-                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-all duration-200"
+                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <User size={18} />
                   Profile
                 </Link>
 
-                <div className="pt-2 mt-2 border-t border-gray-100">
+                <div className="pt-2 mt-2 border-t border-gray-200">
                   <button
                     onClick={() => { handleLogout(); setIsMenuOpen(false); }}
-                    className="flex w-full items-center gap-3 px-3 py-2.5 text-sm font-medium text-error-600 hover:bg-error-50 rounded-lg transition-all duration-200"
+                    className="flex w-full items-center gap-3 px-3 py-2.5 text-sm font-medium text-error-600 hover:bg-error-50 rounded"
                   >
                     <LogOut size={18} />
                     Logout

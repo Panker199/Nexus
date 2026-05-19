@@ -15,10 +15,10 @@ import { getDealsForInvestor } from '../../data/deals';
 import { getNotificationsForUser, getUnreadCount } from '../../data/notifications';
 
 const statStyles = {
-  primary: { bg: 'from-primary-500/10 to-primary-600/5', icon: 'text-primary-600', label: 'text-primary-700', value: 'text-primary-900' },
-  secondary: { bg: 'from-secondary-500/10 to-secondary-600/5', icon: 'text-secondary-600', label: 'text-secondary-700', value: 'text-secondary-900' },
-  accent: { bg: 'from-accent-500/10 to-accent-600/5', icon: 'text-accent-600', label: 'text-accent-700', value: 'text-accent-900' },
-  success: { bg: 'from-success-500/10 to-success-600/5', icon: 'text-success-600', label: 'text-success-700', value: 'text-success-900' },
+  primary: { bg: 'bg-primary-50', icon: 'text-primary-600', label: 'text-primary-700', value: 'text-primary-900' },
+  secondary: { bg: 'bg-gray-50', icon: 'text-gray-600', label: 'text-gray-700', value: 'text-gray-900' },
+  accent: { bg: 'bg-amber-50', icon: 'text-amber-600', label: 'text-amber-700', value: 'text-amber-900' },
+  success: { bg: 'bg-success-50', icon: 'text-success-600', label: 'text-success-700', value: 'text-success-900' },
 } as const;
 
 export const InvestorDashboard: React.FC = () => {
@@ -77,7 +77,7 @@ export const InvestorDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Discover Startups</h1>
@@ -99,10 +99,10 @@ export const InvestorDashboard: React.FC = () => {
               )}
             </Button>
             {showNotifs && recentNotifs.length > 0 && (
-              <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-soft-lg border border-gray-100 z-50 animate-fade-in-up">
+              <div className="absolute right-0 mt-2 w-72 bg-white rounded border border-gray-200 shadow-dropdown z-50">
                 <div className="p-3 space-y-2">
                   {recentNotifs.map(n => (
-                    <div key={n.id} className={`text-xs p-2 rounded-lg ${n.isRead ? '' : 'bg-primary-50'}`}>
+                    <div key={n.id} className={`text-xs p-2 rounded ${n.isRead ? '' : 'bg-primary-50'}`}>
                       <p className="text-gray-700">{n.content}</p>
                     </div>
                   ))}
@@ -137,10 +137,10 @@ export const InvestorDashboard: React.FC = () => {
           const Icon = stat.icon;
           const s = statStyles[stat.color];
           return (
-            <Card key={i} className={`bg-gradient-to-br ${s.bg} border-0 shadow-soft`}>
+            <Card key={i} className={s.bg}>
               <CardBody>
                 <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-xl bg-white/80 shadow-sm">
+                  <div className="p-3 rounded bg-white">
                     <Icon size={20} className={s.icon} />
                   </div>
                   <div>
@@ -155,7 +155,7 @@ export const InvestorDashboard: React.FC = () => {
       </div>
 
       {showRequests && (
-        <div className="animate-fade-in-up">
+        <div>
           <Card>
             <CardBody>
               <div className="flex items-center justify-between mb-4">
@@ -266,7 +266,7 @@ export const InvestorDashboard: React.FC = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {deals.slice(0, 3).map(deal => (
-              <Card key={deal.id} className="border border-gray-100">
+              <Card key={deal.id}>
                 <CardBody className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-semibold text-gray-900">{deal.startupName}</span>

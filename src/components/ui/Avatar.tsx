@@ -97,9 +97,7 @@ export const Avatar: React.FC<AvatarProps> = ({
 
       {status && (
         <span
-          className={`absolute block rounded-full ring-white ${statusColors[status]} ${statusSizes[size]} ${statusPositions[size]} ${
-            status === 'online' ? 'animate-pulse-soft' : ''
-          }`}
+          className={`absolute block rounded-full ring-white ${statusColors[status]} ${statusSizes[size]} ${statusPositions[size]}`}
         />
       )}
     </div>

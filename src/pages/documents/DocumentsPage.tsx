@@ -13,7 +13,7 @@ const documents = [
 
 export const DocumentsPage: React.FC = () => {
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Documents</h1>
@@ -35,7 +35,7 @@ export const DocumentsPage: React.FC = () => {
                 <span className="font-medium text-gray-900">12.5 GB</span>
               </div>
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-primary-500 to-primary-400 rounded-full" style={{ width: '65%' }} />
+                <div className="h-full bg-primary-500 rounded-full" style={{ width: '65%' }} />
               </div>
               <div className="flex justify-between text-xs">
                 <span className="text-gray-500">Available</span>
@@ -43,22 +43,22 @@ export const DocumentsPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-gray-100">
+            <div className="pt-4 border-t border-gray-200">
               <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Quick Access</h3>
               <div className="space-y-1">
                 {['Recent Files', 'Shared with Me', 'Starred', 'Trash'].map((item, i) => (
-                  <button key={i} className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
+                  <button key={i} className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded">
                     {item}
                   </button>
                 ))}
               </div>
             </div>
 
-            <div className="pt-4 border-t border-gray-100">
-              <div className="bg-accent-50/50 rounded-xl p-3 border border-accent-100/50">
-                <HardDrive size={16} className="text-accent-600 mb-1" />
+            <div className="pt-4 border-t border-gray-200">
+              <div className="bg-amber-50 rounded p-3 border border-amber-100">
+                <HardDrive size={16} className="text-amber-600 mb-1" />
                 <p className="text-xs text-gray-600">Upgrade for more</p>
-                <p className="text-xs font-medium text-accent-700 mt-0.5">50 GB plan available</p>
+                <p className="text-xs font-medium text-amber-700 mt-0.5">50 GB plan available</p>
               </div>
             </div>
           </CardBody>
@@ -77,8 +77,8 @@ export const DocumentsPage: React.FC = () => {
             <CardBody>
               <div className="space-y-1">
                 {documents.map(doc => (
-                  <div key={doc.id} className="flex items-center p-3 hover:bg-gray-50 rounded-xl transition-colors group">
-                    <div className="p-2.5 bg-primary-50 rounded-xl mr-4">
+                  <div key={doc.id} className="flex items-center p-3 hover:bg-gray-50 rounded group">
+                    <div className="p-2.5 bg-primary-50 rounded mr-4">
                       <FileText size={20} className="text-primary-600" />
                     </div>
                     <div className="flex-1 min-w-0">

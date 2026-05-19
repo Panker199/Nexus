@@ -47,7 +47,7 @@ export const EntrepreneursPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Find Startups</h1>
         <p className="text-gray-500 mt-0.5">Discover promising startups looking for investment</p>
@@ -68,7 +68,7 @@ export const EntrepreneursPage: React.FC = () => {
                     <button
                       key={industry}
                       onClick={() => toggleIndustry(industry)}
-                      className={`block w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
+                      className={`block w-full text-left px-3 py-2 rounded text-sm ${
                         selectedIndustries.includes(industry)
                           ? 'bg-primary-50 text-primary-700 font-medium'
                           : 'text-gray-600 hover:bg-gray-50'
@@ -87,7 +87,7 @@ export const EntrepreneursPage: React.FC = () => {
                     <button
                       key={range}
                       onClick={() => toggleFundingRange(range)}
-                      className={`block w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
+                      className={`block w-full text-left px-3 py-2 rounded text-sm ${
                         selectedFundingRange.includes(range)
                           ? 'bg-primary-50 text-primary-700 font-medium'
                           : 'text-gray-600 hover:bg-gray-50'
@@ -103,7 +103,7 @@ export const EntrepreneursPage: React.FC = () => {
                 <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Location</h3>
                 <div className="space-y-1">
                   {['San Francisco, CA', 'New York, NY', 'Boston, MA'].map((loc, i) => (
-                    <button key={i} className="flex items-center w-full text-left px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                    <button key={i} className="flex items-center w-full text-left px-3 py-2 rounded text-sm text-gray-600 hover:bg-gray-50">
                       <MapPin size={14} className="mr-2 text-gray-400" />
                       {loc}
                     </button>

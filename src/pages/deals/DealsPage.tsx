@@ -11,10 +11,10 @@ import { findUserById } from '../../data/users';
 import { Deal } from '../../types';
 
 const statStyles = {
-  primary: { bg: 'from-primary-500/10 to-primary-600/5', icon: 'text-primary-600', label: 'text-primary-700', value: 'text-primary-900' },
-  secondary: { bg: 'from-secondary-500/10 to-secondary-600/5', icon: 'text-secondary-600', label: 'text-secondary-700', value: 'text-secondary-900' },
-  accent: { bg: 'from-accent-500/10 to-accent-600/5', icon: 'text-accent-600', label: 'text-accent-700', value: 'text-accent-900' },
-  success: { bg: 'from-success-500/10 to-success-600/5', icon: 'text-success-600', label: 'text-success-700', value: 'text-success-900' },
+  primary: { bg: 'bg-primary-50', icon: 'text-primary-600', label: 'text-primary-700', value: 'text-primary-900' },
+  secondary: { bg: 'bg-gray-50', icon: 'text-gray-600', label: 'text-gray-700', value: 'text-gray-900' },
+  accent: { bg: 'bg-amber-50', icon: 'text-amber-600', label: 'text-amber-700', value: 'text-amber-900' },
+  success: { bg: 'bg-success-50', icon: 'text-success-600', label: 'text-success-700', value: 'text-success-900' },
 } as const;
 
 export const DealsPage: React.FC = () => {
@@ -63,7 +63,7 @@ export const DealsPage: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Deals</h1>
@@ -76,10 +76,10 @@ export const DealsPage: React.FC = () => {
           const Icon = stat.icon;
           const s = statStyles[stat.color];
           return (
-            <Card key={i} className={`bg-gradient-to-br ${s.bg} border-0 shadow-soft`}>
+            <Card key={i} className={s.bg}>
               <CardBody>
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-white/80 shadow-sm">
+                  <div className="p-2.5 rounded bg-white">
                     <Icon size={18} className={s.icon} />
                   </div>
                   <div>
@@ -178,7 +178,7 @@ export const DealsPage: React.FC = () => {
             </div>
           ) : (
             <div className="text-center py-10">
-              <div className="mx-auto w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center mb-3">
+              <div className="mx-auto w-12 h-12 rounded bg-gray-100 flex items-center justify-center mb-3">
                 <DollarSign size={24} className="text-gray-400" />
               </div>
               <p className="text-sm text-gray-500">No deals yet</p>

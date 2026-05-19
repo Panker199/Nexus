@@ -43,7 +43,7 @@ export const ChatUserList: React.FC<ChatUserListProps> = ({ conversations }) => 
               return (
                 <div
                   key={conversation.id}
-                  className={`px-5 py-3 flex cursor-pointer transition-all duration-200 ${
+                  className={`px-5 py-3 flex cursor-pointer ${
                     isActive
                       ? 'bg-primary-50 border-r-2 border-primary-600'
                       : 'hover:bg-gray-50 border-r-2 border-transparent'

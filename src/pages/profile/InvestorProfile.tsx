@@ -16,13 +16,13 @@ export const InvestorProfile: React.FC = () => {
 
   if (!investor || investor.role !== 'investor') {
     return (
-      <div className="text-center py-12 animate-fade-in">
-        <div className="mx-auto w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
+      <div className="text-center py-12">
+        <div className="mx-auto w-16 h-16 rounded bg-gray-100 flex items-center justify-center mb-4">
           <Building2 size={32} className="text-gray-400" />
         </div>
         <h2 className="text-xl font-bold text-gray-900">Investor not found</h2>
         <p className="text-gray-500 mt-1">This profile doesn't exist or has been removed.</p>
-        <Link to="/dashboard/entrepreneur" className="inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 active:scale-[0.97] text-sm px-5 py-2.5 gap-2 border-2 border-gray-200 bg-transparent text-gray-700 hover:border-primary-400 hover:text-primary-700 hover:bg-primary-50 focus:ring-primary-500 mt-4">
+        <Link to="/dashboard/entrepreneur" className="inline-flex items-center justify-center font-medium rounded border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 text-sm px-4 py-2 mt-4">
           Back to Dashboard
         </Link>
       </div>
@@ -32,13 +32,13 @@ export const InvestorProfile: React.FC = () => {
   const isCurrentUser = currentUser?.id === investor.id;
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
-      <Link to={currentUser?.role === 'entrepreneur' ? '/dashboard/entrepreneur' : '/entrepreneurs'} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-colors">
+    <div className="space-y-6">
+      <Link to={currentUser?.role === 'entrepreneur' ? '/dashboard/entrepreneur' : '/entrepreneurs'} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700">
         <ArrowLeft size={16} /> Back
       </Link>
 
       {/* Profile header */}
-      <Card className="border-0 shadow-soft-lg bg-gradient-to-r from-secondary-50/40 via-white to-primary-50/40">
+      <Card className="bg-white">
         <CardBody className="p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
             <div className="flex flex-col sm:flex-row sm:gap-6 items-center sm:items-start">
@@ -146,8 +146,8 @@ export const InvestorProfile: React.FC = () => {
             <CardBody>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {investor.portfolioCompanies.map((company, index) => (
-                  <div key={index} className="flex items-center p-3 border border-gray-100 rounded-xl bg-gray-50/50">
-                    <div className="p-2.5 bg-secondary-50 rounded-lg mr-3">
+                  <div key={index} className="flex items-center p-3 border border-gray-200 rounded bg-gray-50">
+                    <div className="p-2.5 bg-gray-100 rounded mr-3">
                       <Building2 size={16} className="text-secondary-600" />
                     </div>
                     <div>
@@ -172,7 +172,7 @@ export const InvestorProfile: React.FC = () => {
               </div>
             </CardHeader>
             <CardBody className="space-y-4">
-              <div className="bg-secondary-50/50 rounded-xl p-4 border border-secondary-100/50">
+              <div className="bg-gray-50 rounded p-4 border border-gray-200">
                 <span className="text-xs text-gray-500">Investment Range</span>
                 <p className="text-lg font-bold text-gray-900 mt-0.5">{investor.minimumInvestment} - {investor.maximumInvestment}</p>
               </div>
@@ -184,7 +184,7 @@ export const InvestorProfile: React.FC = () => {
                 <span className="text-xs text-gray-500">Typical Timeline</span>
                 <p className="text-sm font-semibold text-gray-900">3-5 years</p>
               </div>
-              <div className="pt-3 border-t border-gray-100">
+              <div className="pt-3 border-t border-gray-200">
                 <span className="text-xs text-gray-500">Focus Areas</span>
                 <div className="mt-3 space-y-3">
                   {[
@@ -198,7 +198,7 @@ export const InvestorProfile: React.FC = () => {
                         <span className="text-gray-500">{item.width}</span>
                       </div>
                       <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-secondary-500 to-secondary-400 rounded-full transition-all" style={{ width: item.width }} />
+                        <div className="h-full bg-primary-500 rounded-full" style={{ width: item.width }} />
                       </div>
                     </div>
                   ))}
@@ -221,7 +221,7 @@ export const InvestorProfile: React.FC = () => {
                 { label: 'Avg. ROI', value: '3.2x', color: 'text-secondary-700' },
                 { label: 'Active Investments', value: investor.portfolioCompanies.length.toString(), color: 'text-accent-700' },
               ].map((stat, i) => (
-                <div key={i} className="flex justify-between items-center p-3 border border-gray-100 rounded-xl bg-gray-50/50">
+                <div key={i} className="flex justify-between items-center p-3 border border-gray-200 rounded bg-gray-50">
                   <span className="text-sm text-gray-600">{stat.label}</span>
                   <span className={`text-lg font-bold ${stat.color}`}>{stat.value}</span>
                 </div>

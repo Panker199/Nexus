@@ -14,7 +14,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, isCurrentUser
   if (!user) return null;
 
   return (
-    <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} items-end gap-2 animate-fade-in-up`}>
+    <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} items-end gap-2`}>
       {!isCurrentUser && (
         <Avatar src={user.avatarUrl} alt={user.name} size="sm" className="flex-shrink-0 mb-1" />
       )}
@@ -23,8 +23,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, isCurrentUser
         <div
           className={`px-4 py-2.5 text-sm leading-relaxed ${
             isCurrentUser
-              ? 'bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-2xl rounded-br-sm shadow-sm'
-              : 'bg-white text-gray-800 rounded-2xl rounded-bl-sm border border-gray-100 shadow-sm'
+              ? 'bg-primary-600 text-white rounded rounded-br-sm'
+              : 'bg-white text-gray-800 rounded rounded-bl-sm border border-gray-200'
           }`}
         >
           {message.content}

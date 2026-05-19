@@ -50,7 +50,7 @@ export const NotificationsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
@@ -74,8 +74,8 @@ export const NotificationsPage: React.FC = () => {
             return (
               <Card
                 key={notification.id}
-                className={`cursor-pointer transition-all duration-200 hover:shadow-soft-lg ${
-                  !notification.isRead ? 'border-l-4 border-l-primary-500 bg-gradient-to-r from-primary-50/30 to-white' : ''
+                className={`cursor-pointer hover:bg-gray-50 ${
+                  !notification.isRead ? 'border-l-4 border-l-primary-500 bg-primary-50/30' : ''
                 }`}
                 onClick={() => handleClick(notification)}
               >
@@ -100,7 +100,7 @@ export const NotificationsPage: React.FC = () => {
       ) : (
         <Card>
           <CardBody className="text-center py-12">
-            <div className="mx-auto w-14 h-14 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
+            <div className="mx-auto w-14 h-14 rounded bg-gray-100 flex items-center justify-center mb-4">
               <Bell size={28} className="text-gray-400" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900">No notifications yet</h3>

@@ -26,14 +26,10 @@ export const ForgotPasswordPage: React.FC = () => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-primary-50/30 to-accent-50/30 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-primary-100/40 blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-accent-100/40 blur-3xl" />
-        </div>
-        <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white py-8 px-6 sm:px-10 rounded-2xl shadow-soft-lg border border-gray-100 text-center">
-            <div className="mx-auto w-14 h-14 rounded-2xl bg-success-50 flex items-center justify-center mb-4">
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="bg-white py-8 px-6 sm:px-10 rounded border border-gray-200 text-center">
+            <div className="mx-auto w-14 h-14 rounded bg-success-50 flex items-center justify-center mb-4">
               <CheckCircle size={32} className="text-success-600" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900">Check your email</h2>
@@ -46,7 +42,7 @@ export const ForgotPasswordPage: React.FC = () => {
                 try again
               </button>
             </p>
-            <Link to="/login" className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+            <Link to="/login" className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900">
               <ArrowLeft size={16} />
               Back to login
             </Link>
@@ -57,14 +53,10 @@ export const ForgotPasswordPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-primary-50/30 to-accent-50/30 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-primary-100/40 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-accent-100/40 blur-3xl" />
-      </div>
-      <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex flex-col items-center">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-soft-lg shadow-primary-500/20">
+          <div className="w-14 h-14 rounded bg-primary-600 flex items-center justify-center">
             <Mail size={28} className="text-white" />
           </div>
           <h2 className="mt-5 text-center text-3xl font-bold text-gray-900">Forgot password?</h2>
@@ -73,7 +65,7 @@ export const ForgotPasswordPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="mt-8 bg-white py-8 px-6 sm:px-10 rounded-2xl shadow-soft-lg border border-gray-100">
+        <div className="mt-8 bg-white py-8 px-6 sm:px-10 rounded border border-gray-200">
           <form className="space-y-5" onSubmit={handleSubmit}>
             <Input
               label="Email address"

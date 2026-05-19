@@ -17,14 +17,14 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ to, icon, text }) => {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex items-center gap-3 py-2.5 px-4 rounded-lg text-sm font-medium transition-all duration-200 ${
+        `flex items-center gap-3 py-2.5 px-4 rounded text-sm font-medium ${
           isActive
-            ? 'bg-primary-50 text-primary-700 shadow-sm'
+            ? 'bg-primary-50 text-primary-700'
             : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
         }`
       }
     >
-      <span className={`transition-colors duration-200 ${({ isActive }: { isActive: boolean }) => isActive ? 'text-primary-600' : 'text-gray-400'}`}>
+      <span className={({ isActive }: { isActive: boolean }) => isActive ? 'text-primary-600' : 'text-gray-400'}>
         {icon}
       </span>
       <span>{text}</span>
@@ -64,7 +64,7 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-64 bg-white border-r border-gray-200/80 hidden md:flex md:flex-col">
+    <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex md:flex-col">
       <div className="flex-1 flex flex-col h-full overflow-y-auto py-4 px-3">
         <div className="space-y-1">
           {primaryItems.map((item, index) => (
@@ -91,12 +91,9 @@ export const Sidebar: React.FC = () => {
         </div>
 
         <div className="mt-auto pt-6">
-          <div className="bg-gradient-to-br from-primary-50 to-primary-100/60 rounded-xl p-4 border border-primary-200/50">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="h-2 w-2 rounded-full bg-primary-500 animate-pulse-soft" />
-              <span className="text-xs font-semibold text-primary-700 uppercase tracking-wider">Pro Tip</span>
-            </div>
-            <p className="text-xs text-primary-800 leading-relaxed">
+          <div className="bg-blue-50 rounded p-3 border border-blue-200">
+            <p className="text-xs font-semibold text-blue-800 mb-1">Pro Tip</p>
+            <p className="text-xs text-blue-700">
               Complete your profile to get better matches with investors.
             </p>
           </div>

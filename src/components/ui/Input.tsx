@@ -39,8 +39,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({
   return (
     <div className={`${widthClass} ${className}`}>
       {label && (
-        <label className={`block text-sm font-medium mb-1.5 transition-colors duration-200 ${
-          error ? 'text-error-600' : isFocused ? 'text-primary-700' : 'text-gray-700'
+        <label className={`block text-sm font-medium mb-1 ${
+          error ? 'text-error-600' : 'text-gray-700'
         }`}>
           {label}
         </label>
@@ -48,8 +48,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({
 
       <div className="relative">
         {startAdornment && (
-          <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors duration-200 ${
-            isFocused && !error ? 'text-primary-500' : error ? 'text-error-500' : 'text-gray-400'
+          <div className={`absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none ${
+            error ? 'text-error-500' : 'text-gray-400'
           }`}>
             {startAdornment}
           </div>
@@ -59,23 +59,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({
           ref={ref}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          className={`block w-full rounded-lg shadow-sm transition-all duration-200 sm:text-sm ${
+          className={`block w-full rounded border transition-colors sm:text-sm ${
             error
-              ? 'border-error-300 focus:border-error-500 focus:ring-error-500 bg-error-50/30'
-              : 'border-gray-200 focus:border-primary-500 focus:ring-primary-500 bg-white hover:border-gray-300'
+              ? 'border-error-300 focus:border-error-500 bg-error-50'
+              : 'border-gray-300 focus:border-primary-500 bg-white hover:border-gray-400'
           } ${
-            startAdornment ? 'pl-11' : 'pl-4'
+            startAdornment ? 'pl-10' : 'pl-3'
           } ${
-            endAdornment ? 'pr-11' : 'pr-4'
-          } py-2.5 focus:shadow-glow`}
+            endAdornment ? 'pr-10' : 'pr-3'
+          } py-2 focus:outline-none`}
           aria-invalid={error ? 'true' : 'false'}
           aria-describedby={error ? `${props.name}-error` : undefined}
           {...props}
         />
 
         {endAdornment && (
-          <div className={`absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none transition-colors duration-200 ${
-            isFocused && !error ? 'text-primary-500' : error ? 'text-error-500' : 'text-gray-400'
+          <div className={`absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none ${
+            error ? 'text-error-500' : 'text-gray-400'
           }`}>
             {endAdornment}
           </div>

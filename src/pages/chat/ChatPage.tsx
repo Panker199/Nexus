@@ -55,9 +55,9 @@ export const ChatPage: React.FC = () => {
   if (!currentUser) return null;
 
   return (
-    <div className="flex h-[calc(100vh-8rem)] bg-white rounded-2xl border border-gray-100 shadow-soft overflow-hidden animate-fade-in">
+    <div className="flex h-[calc(100vh-8rem)] bg-white rounded border border-gray-200 overflow-hidden">
       {/* Conversations sidebar */}
-      <div className="hidden md:block w-80 lg:w-1/4 border-r border-gray-100">
+      <div className="hidden md:block w-80 lg:w-1/4 border-r border-gray-200">
         <ChatUserList conversations={conversations} />
       </div>
 
@@ -66,7 +66,7 @@ export const ChatPage: React.FC = () => {
         {chatPartner ? (
           <>
             {/* Chat header */}
-            <div className="border-b border-gray-100 px-6 py-4 flex justify-between items-center bg-white/80 backdrop-blur-sm">
+            <div className="border-b border-gray-200 px-6 py-4 flex justify-between items-center bg-white">
               <div className="flex items-center gap-3">
                 <Avatar src={chatPartner.avatarUrl} alt={chatPartner.name} size="md" status={chatPartner.isOnline ? 'online' : 'offline'} />
                 <div>
@@ -75,9 +75,9 @@ export const ChatPage: React.FC = () => {
                 </div>
               </div>
               <div className="flex gap-1">
-                <Button variant="ghost" size="sm" className="rounded-full p-2" aria-label="Voice call"><Phone size={18} /></Button>
-                <Button variant="ghost" size="sm" className="rounded-full p-2" aria-label="Video call"><Video size={18} /></Button>
-                <Button variant="ghost" size="sm" className="rounded-full p-2" aria-label="Info"><Info size={18} /></Button>
+                <Button variant="ghost" size="sm" aria-label="Voice call"><Phone size={18} /></Button>
+                <Button variant="ghost" size="sm" aria-label="Video call"><Video size={18} /></Button>
+                <Button variant="ghost" size="sm" aria-label="Info"><Info size={18} /></Button>
               </div>
             </div>
 
@@ -92,7 +92,7 @@ export const ChatPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="h-full flex flex-col items-center justify-center">
-                  <div className="w-14 h-14 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
+                  <div className="w-14 h-14 rounded bg-gray-100 flex items-center justify-center mb-4">
                     <Smile size={28} className="text-gray-400" />
                   </div>
                   <h3 className="text-sm font-medium text-gray-900">No messages yet</h3>
@@ -102,7 +102,7 @@ export const ChatPage: React.FC = () => {
             </div>
 
             {/* Message input */}
-            <div className="border-t border-gray-100 px-6 py-4 bg-white">
+            <div className="border-t border-gray-200 px-6 py-4 bg-white">
               <form onSubmit={handleSendMessage} className="flex gap-3">
                 <Button type="button" variant="ghost" size="sm" className="rounded-full p-2 flex-shrink-0" aria-label="Add emoji">
                   <Smile size={20} />
@@ -123,7 +123,7 @@ export const ChatPage: React.FC = () => {
           </>
         ) : (
           <div className="h-full flex flex-col items-center justify-center">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center mb-4">
+            <div className="w-20 h-20 rounded bg-gray-100 flex items-center justify-center mb-4">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary-500">
                 <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>

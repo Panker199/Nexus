@@ -56,7 +56,7 @@ export const EntrepreneurCard: React.FC<EntrepreneurCardProps> = ({
         </div>
 
         {/* Metadata row */}
-        <div className="mt-4 pt-3.5 border-t border-gray-100 grid grid-cols-3 gap-2">
+        <div className="mt-4 pt-3.5 border-t border-gray-200 grid grid-cols-3 gap-2">
           <div>
             <span className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Funding</span>
             <p className="text-sm font-bold text-gray-900 mt-0.5 flex items-center gap-1">

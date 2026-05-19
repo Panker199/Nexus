@@ -50,7 +50,7 @@ export const CollaborationRequestCard: React.FC<CollaborationRequestCardProps> =
 
   const statusBadge = () => {
     switch (request.status) {
-      case 'pending': return <Badge variant="warning" dot pulse>Pending</Badge>;
+      case 'pending': return <Badge variant="warning" dot>Pending</Badge>;
       case 'accepted': return <Badge variant="success" dot>Accepted</Badge>;
       case 'rejected': return <Badge variant="error">Declined</Badge>;
       case 'canceled': return <Badge variant="gray">Canceled</Badge>;
@@ -59,7 +59,7 @@ export const CollaborationRequestCard: React.FC<CollaborationRequestCardProps> =
   };
 
   return (
-    <Card className="hover:shadow-soft-lg transition-all duration-300">
+    <Card>
       <CardBody className="flex flex-col sm:flex-row sm:items-start gap-4">
         <div className="flex items-start gap-3 flex-1">
           <Avatar src={counterparty.avatarUrl} alt={counterparty.name} size="md" status={counterparty.isOnline ? 'online' : 'offline'} />

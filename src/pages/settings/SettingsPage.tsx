@@ -21,7 +21,7 @@ export const SettingsPage: React.FC = () => {
   if (!user) return null;
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
         <p className="text-gray-500 mt-0.5">Manage your account preferences</p>
@@ -38,8 +38,8 @@ export const SettingsPage: React.FC = () => {
                 return (
                   <button
                     key={i}
-                    className={`flex items-center gap-3 w-full px-3.5 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
-                      isActive ? 'bg-primary-50 text-primary-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    className={`flex items-center gap-3 w-full px-3.5 py-2.5 text-sm font-medium rounded ${
+                      isActive ? 'bg-primary-50 text-primary-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     }`}
                   >
                     <Icon size={18} />
@@ -77,7 +77,7 @@ export const SettingsPage: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Bio</label>
                 <textarea
-                  className="w-full rounded-xl border-gray-200 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200 sm:text-sm px-4 py-2.5"
+                  className="w-full rounded border border-gray-300 focus:border-primary-500 sm:text-sm px-3 py-2"
                   rows={4}
                   defaultValue={user.bio}
                 />
@@ -96,7 +96,7 @@ export const SettingsPage: React.FC = () => {
               <h2 className="text-lg font-semibold text-gray-900">Security</h2>
             </CardHeader>
             <CardBody className="space-y-6">
-              <div className="flex items-center justify-between p-4 rounded-xl bg-gray-50/50 border border-gray-100">
+              <div className="flex items-center justify-between p-4 rounded bg-gray-50 border border-gray-200">
                 <div>
                   <h3 className="text-sm font-medium text-gray-900">Two-Factor Auth</h3>
                   <p className="text-xs text-gray-500 mt-0.5">Add an extra layer of security</p>
@@ -107,7 +107,7 @@ export const SettingsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-gray-100">
+              <div className="pt-4 border-t border-gray-200">
                 <h3 className="text-sm font-medium text-gray-900 mb-4">Change Password</h3>
                 <div className="space-y-4 max-w-md">
                   <Input label="Current Password" type="password" />

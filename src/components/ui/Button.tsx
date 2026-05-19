@@ -24,39 +24,32 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 active:scale-[0.97]';
+  const baseStyles = 'inline-flex items-center justify-center font-medium rounded border transition-colors focus:outline-none';
 
   const sizeStyles = {
-    xs: 'text-xs px-2.5 py-1 gap-1.5',
-    sm: 'text-sm px-3.5 py-2 gap-2',
-    md: 'text-sm px-5 py-2.5 gap-2',
-    lg: 'text-base px-6 py-3 gap-2.5',
-    xl: 'text-lg px-8 py-3.5 gap-3',
+    xs: 'text-xs px-2.5 py-1 gap-1',
+    sm: 'text-sm px-3 py-1.5 gap-1.5',
+    md: 'text-sm px-4 py-2 gap-2',
+    lg: 'text-base px-5 py-2.5 gap-2',
+    xl: 'text-lg px-6 py-3 gap-2.5',
   };
 
   const variantStyles = {
-    primary: 'bg-primary-600 text-white shadow-sm hover:bg-primary-700 hover:shadow-md focus:ring-primary-500 focus:shadow-glow disabled:bg-primary-300',
-    secondary: 'bg-secondary-600 text-white shadow-sm hover:bg-secondary-700 hover:shadow-md focus:ring-secondary-500 disabled:bg-secondary-300',
-    accent: 'bg-accent-500 text-white shadow-sm hover:bg-accent-600 hover:shadow-md focus:ring-accent-400 disabled:bg-accent-300',
-    outline: 'border-2 border-gray-200 bg-transparent text-gray-700 hover:border-primary-400 hover:text-primary-700 hover:bg-primary-50 focus:ring-primary-500 disabled:border-gray-100 disabled:text-gray-400',
-    ghost: 'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:ring-primary-500 disabled:text-gray-300',
-    link: 'bg-transparent text-primary-600 hover:text-primary-800 hover:underline focus:ring-primary-500 p-0 disabled:text-gray-400',
-    success: 'bg-success-500 text-white shadow-sm hover:bg-success-600 hover:shadow-md focus:ring-success-500 disabled:bg-success-300',
-    warning: 'bg-warning-500 text-white shadow-sm hover:bg-warning-600 hover:shadow-md focus:ring-warning-500 disabled:bg-warning-300',
-    error: 'bg-error-500 text-white shadow-sm hover:bg-error-600 hover:shadow-md focus:ring-error-500 disabled:bg-error-300',
+    primary: 'bg-primary-600 text-white border-primary-600 hover:bg-primary-700 hover:border-primary-700 disabled:opacity-50',
+    secondary: 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200 hover:border-gray-300 disabled:opacity-50',
+    accent: 'bg-accent-500 text-white border-accent-500 hover:bg-accent-600 hover:border-accent-600 disabled:opacity-50',
+    outline: 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50',
+    ghost: 'bg-transparent text-gray-600 border-transparent hover:bg-gray-100 disabled:opacity-50',
+    link: 'bg-transparent text-primary-600 border-transparent hover:text-primary-800 p-0 disabled:opacity-50',
+    success: 'bg-success-500 text-white border-success-500 hover:bg-success-600 hover:border-success-600 disabled:opacity-50',
+    warning: 'bg-warning-500 text-white border-warning-500 hover:bg-warning-600 hover:border-warning-600 disabled:opacity-50',
+    error: 'bg-error-500 text-white border-error-500 hover:bg-error-600 hover:border-error-600 disabled:opacity-50',
   };
 
-  const loadingClass = isLoading ? 'opacity-80 cursor-wait' : '';
   const widthClass = fullWidth ? 'w-full' : '';
   const disabledClass = disabled ? 'opacity-50 cursor-not-allowed' : '';
 
-  const combinedClassName = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${widthClass} ${loadingClass} ${disabledClass} ${className}`;
-
-  const renderIcon = (icon: React.ReactNode, size: ButtonSize) => {
-    const iconSizes = { xs: 14, sm: 16, md: 18, lg: 20, xl: 22 };
-    const iconSize = iconSizes[size];
-    return React.cloneElement(icon as React.ReactElement, { size: iconSize });
-  };
+  const combinedClassName = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${widthClass} ${disabledClass} ${className}`;
 
   return (
     <button
@@ -70,10 +63,10 @@ export const Button: React.FC<ButtonProps> = ({
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
         </svg>
       ) : leftIcon ? (
-        renderIcon(leftIcon, size)
+        <span className="flex-shrink-0">{leftIcon}</span>
       ) : null}
       {children && <span>{children}</span>}
-      {!isLoading && rightIcon && renderIcon(rightIcon, size)}
+      {!isLoading && rightIcon && <span className="flex-shrink-0">{rightIcon}</span>}
     </button>
   );
 };

@@ -36,16 +36,10 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-primary-50/30 to-accent-50/30 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-primary-100/40 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-accent-100/40 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-primary-50/20 to-accent-50/20 blur-3xl" />
-      </div>
-
-      <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex flex-col items-center">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-soft-lg shadow-primary-500/20">
+          <div className="w-14 h-14 rounded bg-primary-600 flex items-center justify-center">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
               <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M16 21V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -57,9 +51,9 @@ export const RegisterPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="mt-8 bg-white py-8 px-6 sm:px-10 rounded-2xl shadow-soft-lg border border-gray-100">
+        <div className="mt-8 bg-white py-8 px-6 sm:px-10 rounded border border-gray-200">
           {error && (
-            <div className="mb-5 bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-xl flex items-start gap-2.5 text-sm animate-fade-in">
+            <div className="mb-5 bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded flex items-start gap-2.5 text-sm">
               <AlertCircle size={18} className="flex-shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
@@ -73,9 +67,9 @@ export const RegisterPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  className={`py-3 px-4 border-2 rounded-xl flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200 ${
+                  className={`py-3 px-4 border rounded flex items-center justify-center gap-2 text-sm font-medium ${
                     role === 'entrepreneur'
-                      ? 'border-primary-500 bg-primary-50 text-primary-700 shadow-sm'
+                      ? 'border-primary-500 bg-primary-50 text-primary-700'
                       : 'border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'
                   }`}
                   onClick={() => setRole('entrepreneur')}
@@ -85,9 +79,9 @@ export const RegisterPage: React.FC = () => {
                 </button>
                 <button
                   type="button"
-                  className={`py-3 px-4 border-2 rounded-xl flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200 ${
+                  className={`py-3 px-4 border rounded flex items-center justify-center gap-2 text-sm font-medium ${
                     role === 'investor'
-                      ? 'border-primary-500 bg-primary-50 text-primary-700 shadow-sm'
+                      ? 'border-primary-500 bg-primary-50 text-primary-700'
                       : 'border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'
                   }`}
                   onClick={() => setRole('investor')}
@@ -111,7 +105,7 @@ export const RegisterPage: React.FC = () => {
               />
               <span className="text-sm text-gray-600">
                 I agree to the{' '}
-                <a href="#" className="font-medium text-primary-600 hover:text-primary-700">Terms of Service</a>
+                <a href="#" className="font-medium text-primary-600 hover:text-primary-700">Terms</a>
                 {' '}and{' '}
                 <a href="#" className="font-medium text-primary-600 hover:text-primary-700">Privacy Policy</a>
               </span>
@@ -125,7 +119,7 @@ export const RegisterPage: React.FC = () => {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-500">
               Already have an account?{' '}
-              <Link to="/login" className="font-semibold text-primary-600 hover:text-primary-700 transition-colors">
+              <Link to="/login" className="font-semibold text-primary-600 hover:text-primary-700">
                 Sign in
               </Link>
             </p>
