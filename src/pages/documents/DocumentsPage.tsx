@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import {
-  FileText, Upload, Download, Trash2, Share2, HardDrive,
-  Pen, Eye, FileSignature, X
+  Upload, Download, Trash2, Share2, HardDrive,
+  Pen, Eye, FileSignature
 } from 'lucide-react';
+import { GoogleIcon } from '../../components/ui/GoogleIcon';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
@@ -15,6 +16,12 @@ import {
   addDocument, updateDocumentStatus, removeDocument,
 } from '../../data/documents';
 import { Document, DocumentStatus } from '../../types';
+
+const docTypeIcon: Record<string, string> = {
+  PDF: 'picture_as_pdf',
+  Document: 'description',
+  Spreadsheet: 'table_chart',
+};
 
 const statusConfig: Record<DocumentStatus, { label: string; variant: 'warning' | 'primary' | 'success' }> = {
   draft: { label: 'Draft', variant: 'warning' },
@@ -78,7 +85,7 @@ export const DocumentsPage: React.FC = () => {
   };
 
   const sidebarFilters: { key: typeof filter; label: string; icon: React.ReactNode }[] = [
-    { key: 'all', label: 'All Documents', icon: <FileText size={16} /> },
+    { key: 'all', label: 'All Documents', icon: <GoogleIcon icon="folder" size={16} className="text-gray-400" /> },
     { key: 'draft', label: 'Drafts', icon: <Pen size={16} /> },
     { key: 'in_review', label: 'In Review', icon: <Eye size={16} /> },
     { key: 'signed', label: 'Signed', icon: <FileSignature size={16} /> },
@@ -89,7 +96,7 @@ export const DocumentsPage: React.FC = () => {
       <div className="flex justify-between items-center">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
-            <FileText size={20} className="text-primary-600" />
+                          <GoogleIcon icon={docTypeIcon[doc.type] ?? 'attach_file'} size={20} className="text-primary-600" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Document Chamber</h1>
@@ -136,7 +143,7 @@ export const DocumentsPage: React.FC = () => {
           <Card>
             <CardHeader className="flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <FileText size={16} className="text-primary-600" />
+                <GoogleIcon icon="description" size={16} className="text-primary-600" />
                 <h2 className="text-sm font-semibold text-gray-900">
                   {filter === 'all' ? 'All Documents' : `${statusConfig[filter].label} Documents`}
                 </h2>
@@ -146,7 +153,7 @@ export const DocumentsPage: React.FC = () => {
             <CardBody>
               {documents.length === 0 ? (
                 <div className="text-center py-10">
-                  <FileText size={32} className="text-gray-300 mx-auto mb-2" />
+                  <GoogleIcon icon="description" size={32} className="text-gray-300 mx-auto mb-2" />
                   <p className="text-sm text-gray-500">No documents found</p>
                 </div>
               ) : (
@@ -160,7 +167,7 @@ export const DocumentsPage: React.FC = () => {
                         onClick={() => setPreviewDoc(doc)}
                       >
                         <div className="p-2.5 bg-primary-50 rounded mr-4">
-                          <FileText size={20} className="text-primary-600" />
+            <GoogleIcon icon="folder" size={20} className="text-primary-600" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
@@ -227,7 +234,7 @@ export const DocumentsPage: React.FC = () => {
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-primary-50 rounded">
-                  <FileText size={24} className="text-primary-600" />
+                  <GoogleIcon icon={docTypeIcon[previewDoc.type] ?? 'attach_file'} size={24} className="text-primary-600" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-900">{previewDoc.name}</p>
@@ -241,7 +248,7 @@ export const DocumentsPage: React.FC = () => {
 
             <div className="bg-gray-50 rounded-lg border border-gray-200 p-6 min-h-[200px] flex items-center justify-center">
               <div className="text-center">
-                <FileText size={40} className="text-gray-300 mx-auto mb-2" />
+                <GoogleIcon icon={docTypeIcon[previewDoc.type] ?? 'attach_file'} size={40} className="text-gray-300 mx-auto mb-2" />
                 <p className="text-sm text-gray-500">Document preview</p>
                 <p className="text-xs text-gray-400 mt-1">{previewDoc.name}</p>
               </div>
