@@ -12,11 +12,42 @@ const themeColors = [
   { name: 'orange', class: 'bg-orange-500' },
 ];
 
+const densityMap: Record<string, string> = {
+  compact: '0.85',
+  comfortable: '1',
+  spacious: '1.15',
+};
+
+const fontSizeMap: Record<string, string> = {
+  small: '13px',
+  normal: '15px',
+  large: '17px',
+};
+
+function loadLocal(key: string, fallback: string): string {
+  try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
+}
+
 export const Themes: React.FC = () => {
   const { mode, setMode } = useTheme();
-  const [theme, setTheme] = useState('blue');
-  const [density, setDensity] = useState('comfortable');
-  const [fontSize, setFontSize] = useState('normal');
+  const [theme, setTheme] = useState(() => loadLocal('nexus-accent', 'blue'));
+  const [density, setDensity] = useState(() => loadLocal('nexus-density', 'comfortable'));
+  const [fontSize, setFontSize] = useState(() => loadLocal('nexus-font-size', 'normal'));
+
+  const apply = () => {
+    localStorage.setItem('nexus-accent', theme);
+    localStorage.setItem('nexus-density', density);
+    localStorage.setItem('nexus-font-size', fontSize);
+    document.documentElement.style.setProperty('--density-spacing', densityMap[density]);
+    document.documentElement.style.setProperty('--font-size-base', fontSizeMap[fontSize]);
+  };
+
+  React.useEffect(() => {
+    const d = loadLocal('nexus-density', 'comfortable');
+    const f = loadLocal('nexus-font-size', 'normal');
+    document.documentElement.style.setProperty('--density-spacing', densityMap[d]);
+    document.documentElement.style.setProperty('--font-size-base', fontSizeMap[f]);
+  }, []);
 
   return (
     <Card>
@@ -103,7 +134,7 @@ export const Themes: React.FC = () => {
         </div>
 
         <div className="flex justify-end pt-2">
-          <Button>Apply</Button>
+          <Button onClick={apply}>Apply</Button>
         </div>
       </CardBody>
     </Card>

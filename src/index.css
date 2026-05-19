@@ -1,6 +1,8 @@
 :root {
   --color-white: #FFFFFF;
   --color-black: #000000;
+  --density-spacing: 1;
+  --font-size-base: 15px;
   --color-primary-50: #EFF6FF;
   --color-primary-100: #DBEAFE;
   --color-primary-200: #BFDBFE;
@@ -80,6 +82,8 @@
 .dark {
   --color-white: #1F2937;
   --color-black: #F9FAFB;
+  --density-spacing: 1;
+  --font-size-base: 15px;
   --color-primary-50: #172554;
   --color-primary-100: #1E3A8A;
   --color-primary-200: #1E40AF;
@@ -168,7 +172,7 @@
 
   body {
     @apply bg-gray-50 text-gray-800;
-    font-size: 15px;
+    font-size: var(--font-size-base, 15px);
     line-height: 1.6;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'liga';
   }
