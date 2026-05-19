@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Lock, Bell, Globe, Palette, CreditCard, Check, Smartphone, Monitor, Moon, Sun } from 'lucide-react';
+import { User, Lock, Bell, Globe, Palette, CreditCard, Smartphone, Monitor, Moon, Sun, Key, Shield, Mail, Clock, Paintbrush, FileText, Download } from 'lucide-react';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
@@ -81,7 +81,7 @@ export const SettingsPage: React.FC = () => {
 /* ─── Profile ─────────────────────────────────────────── */
 const ProfileSettings: React.FC<{ user: any }> = ({ user }) => (
   <Card>
-    <CardHeader><h2 className="text-lg font-semibold text-gray-900">Profile</h2></CardHeader>
+    <CardHeader><div className="flex items-center gap-2"><User size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Profile</h2></div></CardHeader>
     <CardBody className="space-y-6">
       <div className="flex items-center gap-6">
         <Avatar src={user.avatarUrl} alt={user.name} size="xl" ring />
@@ -114,11 +114,11 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => (
 /* ─── Security ─────────────────────────────────────────── */
 const SecuritySettings: React.FC = () => (
   <Card>
-    <CardHeader><h2 className="text-lg font-semibold text-gray-900">Security</h2></CardHeader>
+    <CardHeader><div className="flex items-center gap-2"><Lock size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Security</h2></div></CardHeader>
     <CardBody className="space-y-6">
       <div className="flex items-center justify-between p-4 rounded bg-gray-50 border border-gray-200">
         <div>
-          <h3 className="text-sm font-medium text-gray-900">Two-Factor Auth</h3>
+          <div className="flex items-center gap-2"><Shield size={16} className="text-primary-600" /><h3 className="text-sm font-medium text-gray-900">Two-Factor Auth</h3></div>
           <p className="text-xs text-gray-500 mt-0.5">Add an extra layer of security</p>
         </div>
         <div className="flex items-center gap-3">
@@ -128,7 +128,7 @@ const SecuritySettings: React.FC = () => (
       </div>
 
       <div className="pt-4 border-t border-gray-200">
-        <h3 className="text-sm font-medium text-gray-900 mb-4">Change Password</h3>
+        <div className="flex items-center gap-2 mb-4"><Key size={16} className="text-primary-600" /><h3 className="text-sm font-medium text-gray-900">Change Password</h3></div>
         <div className="space-y-4 max-w-md">
           <Input label="Current Password" type="password" />
           <Input label="New Password" type="password" />
@@ -138,7 +138,7 @@ const SecuritySettings: React.FC = () => (
       </div>
 
       <div className="pt-4 border-t border-gray-200">
-        <h3 className="text-sm font-medium text-gray-900 mb-4">Active Sessions</h3>
+        <div className="flex items-center gap-2 mb-4"><Monitor size={16} className="text-primary-600" /><h3 className="text-sm font-medium text-gray-900">Active Sessions</h3></div>
         <div className="space-y-3">
           {[
             { device: 'Chrome on Windows', location: 'San Francisco, CA', time: 'Active now', current: true },
@@ -195,7 +195,7 @@ const NotificationSettings: React.FC = () => {
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader><h2 className="text-lg font-semibold text-gray-900">Email Notifications</h2></CardHeader>
+        <CardHeader><div className="flex items-center gap-2"><Mail size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Email Notifications</h2></div></CardHeader>
         <CardBody className="space-y-4">
           {notifyItems.map(item => (
             <div key={item.key} className="flex items-center justify-between">
@@ -212,7 +212,7 @@ const NotificationSettings: React.FC = () => {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Push Notifications</h2>
+            <div className="flex items-center gap-2"><Bell size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Push Notifications</h2></div>
             <Switch checked={toggles.pushEnabled} onChange={() => toggle('pushEnabled')} />
           </div>
         </CardHeader>
@@ -247,7 +247,7 @@ const LanguageSettings: React.FC = () => {
 
   return (
     <Card>
-      <CardHeader><h2 className="text-lg font-semibold text-gray-900">Language & Region</h2></CardHeader>
+      <CardHeader><div className="flex items-center gap-2"><Globe size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Language & Region</h2></div></CardHeader>
       <CardBody className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
@@ -326,7 +326,7 @@ const AppearanceSettings: React.FC = () => {
 
   return (
     <Card>
-      <CardHeader><h2 className="text-lg font-semibold text-gray-900">Appearance</h2></CardHeader>
+      <CardHeader><div className="flex items-center gap-2"><Palette size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Appearance</h2></div></CardHeader>
       <CardBody className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Theme Mode</label>
@@ -358,7 +358,7 @@ const AppearanceSettings: React.FC = () => {
         </div>
 
         <div className="pt-4 border-t border-gray-200">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Accent Color</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2"><Paintbrush size={14} className="inline mr-1 text-primary-600" />Accent Color</label>
           <div className="flex gap-3">
             {themeColors.map(c => (
               <button
@@ -427,7 +427,7 @@ const BillingSettings: React.FC = () => {
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader><h2 className="text-lg font-semibold text-gray-900">Current Plan</h2></CardHeader>
+        <CardHeader><div className="flex items-center gap-2"><CreditCard size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Current Plan</h2></div></CardHeader>
         <CardBody>
           <div className="flex items-center justify-between">
             <div>
@@ -447,7 +447,7 @@ const BillingSettings: React.FC = () => {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Payment Method</h2>
+            <div className="flex items-center gap-2"><CreditCard size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Payment Method</h2></div>
             <Button variant="outline" size="sm">Add Card</Button>
           </div>
         </CardHeader>
@@ -466,7 +466,7 @@ const BillingSettings: React.FC = () => {
       </Card>
 
       <Card>
-        <CardHeader><h2 className="text-lg font-semibold text-gray-900">Billing History</h2></CardHeader>
+        <CardHeader><div className="flex items-center gap-2"><FileText size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Billing History</h2></div></CardHeader>
         <CardBody>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

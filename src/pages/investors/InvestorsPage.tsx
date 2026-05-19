@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, MapPin } from 'lucide-react';
+import { Search, Filter, MapPin, CircleDollarSign } from 'lucide-react';
 import { Input } from '../../components/ui/Input';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
@@ -39,9 +39,14 @@ export const InvestorsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Find Investors</h1>
-        <p className="text-gray-500 mt-0.5">Connect with investors who match your startup</p>
+      <div className="flex items-start gap-3">
+        <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
+          <CircleDollarSign size={20} className="text-primary-600" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Find Investors</h1>
+          <p className="text-sm text-gray-500 mt-0.5">Connect with investors who match your startup</p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

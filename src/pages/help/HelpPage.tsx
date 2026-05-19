@@ -17,9 +17,14 @@ export const HelpPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Help & Support</h1>
-        <p className="text-gray-500 mt-0.5">Find answers or get in touch</p>
+      <div className="flex items-start gap-3">
+        <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
+          <HelpCircle size={20} className="text-primary-600" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Help & Support</h1>
+          <p className="text-sm text-gray-500 mt-0.5">Find answers or get in touch</p>
+        </div>
       </div>
 
       {/* Search */}
@@ -55,7 +60,10 @@ export const HelpPage: React.FC = () => {
       {/* FAQs */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">FAQs</h2>
+          <div className="flex items-center gap-2">
+            <HelpCircle size={18} className="text-primary-600" />
+            <h2 className="text-lg font-semibold text-gray-900">FAQs</h2>
+          </div>
         </CardHeader>
         <CardBody>
           <div className="space-y-2">
@@ -82,7 +90,10 @@ export const HelpPage: React.FC = () => {
       {/* Contact form */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">Still need help?</h2>
+          <div className="flex items-center gap-2">
+            <Mail size={18} className="text-primary-600" />
+            <h2 className="text-lg font-semibold text-gray-900">Still need help?</h2>
+          </div>
         </CardHeader>
         <CardBody>
           <form className="space-y-5 max-w-xl">

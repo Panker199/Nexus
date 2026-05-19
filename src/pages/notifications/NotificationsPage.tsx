@@ -52,9 +52,14 @@ export const NotificationsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
-          <p className="text-gray-500 mt-0.5">Stay updated with your network</p>
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
+            <Bell size={20} className="text-primary-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Notifications</h1>
+            <p className="text-sm text-gray-500 mt-0.5">Stay updated with your network</p>
+          </div>
         </div>
         {unreadCount > 0 && (
           <div className="flex items-center gap-3">

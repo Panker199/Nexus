@@ -49,11 +49,9 @@ export default {
       },
 
       fontFamily: {
-        sans: [
-          '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto',
-          'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-          'Helvetica Neue', 'Arial', 'sans-serif',
-        ],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
 
       boxShadow: {

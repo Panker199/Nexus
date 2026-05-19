@@ -15,9 +15,14 @@ export const DocumentsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Documents</h1>
-          <p className="text-gray-500 mt-0.5">Manage your important files</p>
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
+            <FileText size={20} className="text-primary-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Documents</h1>
+            <p className="text-sm text-gray-500 mt-0.5">Manage your important files</p>
+          </div>
         </div>
         <Button leftIcon={<Upload size={18} />}>Upload</Button>
       </div>
@@ -26,7 +31,10 @@ export const DocumentsPage: React.FC = () => {
         {/* Sidebar */}
         <Card className="lg:col-span-1">
           <CardHeader>
-            <h2 className="text-sm font-semibold text-gray-900">Storage</h2>
+            <div className="flex items-center gap-2">
+              <HardDrive size={16} className="text-primary-600" />
+              <h2 className="text-sm font-semibold text-gray-900">Storage</h2>
+            </div>
           </CardHeader>
           <CardBody className="space-y-4">
             <div className="space-y-2">
@@ -68,7 +76,10 @@ export const DocumentsPage: React.FC = () => {
         <div className="lg:col-span-3">
           <Card>
             <CardHeader className="flex justify-between items-center">
-              <h2 className="text-sm font-semibold text-gray-900">All Documents</h2>
+              <div className="flex items-center gap-2">
+                <FileText size={16} className="text-primary-600" />
+                <h2 className="text-sm font-semibold text-gray-900">All Documents</h2>
+              </div>
               <div className="flex gap-2">
                 <Button variant="ghost" size="xs">Sort</Button>
                 <Button variant="ghost" size="xs">Filter</Button>

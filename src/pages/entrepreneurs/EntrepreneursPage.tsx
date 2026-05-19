@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, MapPin } from 'lucide-react';
+import { Search, Filter, MapPin, Building2 } from 'lucide-react';
 import { Input } from '../../components/ui/Input';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
@@ -48,9 +48,14 @@ export const EntrepreneursPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Find Startups</h1>
-        <p className="text-gray-500 mt-0.5">Discover promising startups looking for investment</p>
+      <div className="flex items-start gap-3">
+        <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
+          <Building2 size={20} className="text-primary-600" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Find Startups</h1>
+          <p className="text-sm text-gray-500 mt-0.5">Discover promising startups looking for investment</p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

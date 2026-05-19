@@ -79,9 +79,14 @@ export const InvestorDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Discover Startups</h1>
-          <p className="text-gray-500 mt-0.5">Find and connect with promising entrepreneurs</p>
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
+            <TrendingUp size={20} className="text-primary-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Discover Startups</h1>
+            <p className="text-sm text-gray-500 mt-0.5">Find and connect with promising entrepreneurs</p>
+          </div>
         </div>
         <div className="flex gap-2">
           <div className="relative">
@@ -160,7 +165,10 @@ export const InvestorDashboard: React.FC = () => {
             <CardBody>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-900">My Collaboration Requests</h2>
+                  <div className="flex items-center gap-2">
+                    <Send size={18} className="text-primary-600" />
+                    <h2 className="text-lg font-semibold text-gray-900">My Collaboration Requests</h2>
+                  </div>
                   <p className="text-xs text-gray-500 mt-0.5">{sentRequests.length} total &middot; {pendingCount} pending &middot; {acceptedCount} accepted</p>
                 </div>
                 <Button variant="ghost" size="sm" onClick={() => setShowRequests(false)}>Close</Button>
@@ -225,7 +233,10 @@ export const InvestorDashboard: React.FC = () => {
 
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Featured Startups</h2>
+              <div className="flex items-center gap-2">
+                <Users size={18} className="text-primary-600" />
+                <h2 className="text-lg font-semibold text-gray-900">Featured Startups</h2>
+              </div>
               <span className="text-sm text-gray-500">{filteredEntrepreneurs.length} results</span>
             </div>
 
@@ -261,7 +272,10 @@ export const InvestorDashboard: React.FC = () => {
       {deals.length > 0 && !showRequests && (
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-semibold text-gray-900">Active Deals</h2>
+            <div className="flex items-center gap-2">
+              <Briefcase size={18} className="text-primary-600" />
+              <h2 className="text-lg font-semibold text-gray-900">Active Deals</h2>
+            </div>
             <Link to="/deals" className="text-sm text-primary-600 hover:text-primary-700 font-medium">View all</Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

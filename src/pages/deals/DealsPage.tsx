@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, DollarSign, TrendingUp, Users, Calendar, Plus } from 'lucide-react';
+import { Search, DollarSign, TrendingUp, Users, Calendar, Briefcase } from 'lucide-react';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
@@ -65,9 +65,14 @@ export const DealsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Deals</h1>
-          <p className="text-gray-500 mt-0.5">Manage your investment pipeline</p>
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
+            <Briefcase size={20} className="text-primary-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Deals</h1>
+            <p className="text-sm text-gray-500 mt-0.5">Manage your investment pipeline</p>
+          </div>
         </div>
       </div>
 
@@ -128,7 +133,8 @@ export const DealsPage: React.FC = () => {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Briefcase size={16} className="text-primary-600" />
             <h2 className="text-sm font-semibold text-gray-900">Active Deals</h2>
             <span className="text-xs text-gray-500">{filteredDeals.length} results</span>
           </div>

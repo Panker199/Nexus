@@ -59,9 +59,14 @@ export const EntrepreneurDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Welcome back, {user.name.split(' ')[0]}</h1>
-          <p className="text-gray-500 mt-0.5">Here's your startup overview today</p>
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
+            <TrendingUp size={20} className="text-primary-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Welcome back, {user.name.split(' ')[0]}</h1>
+            <p className="text-sm text-gray-500 mt-0.5">Here's your startup overview today</p>
+          </div>
         </div>
         <div className="flex gap-2">
           <div className="relative">
@@ -124,7 +129,10 @@ export const EntrepreneurDashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Collaboration Requests</h2>
+            <div className="flex items-center gap-2">
+              <Bell size={18} className="text-primary-600" />
+              <h2 className="text-lg font-semibold text-gray-900">Collaboration Requests</h2>
+            </div>
             <Badge variant="primary" dot={pendingRequests.length > 0} pulse={pendingRequests.length > 0}>
               {pendingRequests.length} pending
             </Badge>
@@ -158,7 +166,10 @@ export const EntrepreneurDashboard: React.FC = () => {
           {deals.length > 0 && (
             <div className="pt-2">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-gray-900">Active Deals</h3>
+                <div className="flex items-center gap-2">
+                  <Briefcase size={16} className="text-primary-600" />
+                  <h3 className="text-sm font-semibold text-gray-900">Active Deals</h3>
+                </div>
                 <Link to="/deals" className="text-xs text-primary-600 hover:text-primary-700 font-medium">View all</Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -182,7 +193,10 @@ export const EntrepreneurDashboard: React.FC = () => {
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Recommended Investors</h2>
+          <div className="flex items-center gap-2">
+            <Users size={18} className="text-primary-600" />
+            <h2 className="text-lg font-semibold text-gray-900">Recommended Investors</h2>
+          </div>
           <div className="space-y-3">
             {recommendedInvestors.map(investor => (
               <InvestorCard key={investor.id} investor={investor} showActions={false} />
