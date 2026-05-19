@@ -1,14 +1,60 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 
 type ThemeMode = 'light' | 'dark';
 
-interface ThemeContextType {
+interface ThemeConfig {
   mode: ThemeMode;
+  accent: string;
+  density: string;
+  fontSize: string;
+}
+
+interface ThemeContextType extends ThemeConfig {
   setMode: (mode: ThemeMode) => void;
-  toggle: () => void;
+  setAccent: (accent: string) => void;
+  setDensity: (density: string) => void;
+  setFontSize: (fontSize: string) => void;
+  resetAll: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+/* ─── Accent palettes ────────────────────────────── */
+
+const accents: Record<string, Record<string, string>> = {
+  blue: {
+    '--color-primary-50': '#EFF6FF', '--color-primary-100': '#DBEAFE', '--color-primary-200': '#BFDBFE',
+    '--color-primary-300': '#93C5FD', '--color-primary-400': '#60A5FA', '--color-primary-500': '#3B82F6',
+    '--color-primary-600': '#2563EB', '--color-primary-700': '#1D4ED8', '--color-primary-800': '#1E40AF',
+    '--color-primary-900': '#1E3A8A', '--color-primary-950': '#172554',
+  },
+  indigo: {
+    '--color-primary-50': '#EEF2FF', '--color-primary-100': '#E0E7FF', '--color-primary-200': '#C7D2FE',
+    '--color-primary-300': '#A5B4FC', '--color-primary-400': '#818CF8', '--color-primary-500': '#6366F1',
+    '--color-primary-600': '#4F46E5', '--color-primary-700': '#4338CA', '--color-primary-800': '#3730A3',
+    '--color-primary-900': '#312E81', '--color-primary-950': '#1E1B4B',
+  },
+  green: {
+    '--color-primary-50': '#F0FDF4', '--color-primary-100': '#DCFCE7', '--color-primary-200': '#BBF7D0',
+    '--color-primary-300': '#86EFAC', '--color-primary-400': '#4ADE80', '--color-primary-500': '#22C55E',
+    '--color-primary-600': '#16A34A', '--color-primary-700': '#15803D', '--color-primary-800': '#166534',
+    '--color-primary-900': '#14532D', '--color-primary-950': '#052E16',
+  },
+  purple: {
+    '--color-primary-50': '#FAF5FF', '--color-primary-100': '#F3E8FF', '--color-primary-200': '#E9D5FF',
+    '--color-primary-300': '#D8B4FE', '--color-primary-400': '#C084FC', '--color-primary-500': '#A855F7',
+    '--color-primary-600': '#9333EA', '--color-primary-700': '#7E22CE', '--color-primary-800': '#6B21A8',
+    '--color-primary-900': '#581C87', '--color-primary-950': '#3B0764',
+  },
+  orange: {
+    '--color-primary-50': '#FFF7ED', '--color-primary-100': '#FFEDD5', '--color-primary-200': '#FED7AA',
+    '--color-primary-300': '#FDBA74', '--color-primary-400': '#FB923C', '--color-primary-500': '#F97316',
+    '--color-primary-600': '#EA580C', '--color-primary-700': '#C2410C', '--color-primary-800': '#9A3412',
+    '--color-primary-900': '#7C2D12', '--color-primary-950': '#431407',
+  },
+};
+
+/* ─── Light / Dark variable sets ─────────────────── */
 
 const lightVars: Record<string, string> = {
   '--color-white': '#FFFFFF',
@@ -68,32 +114,97 @@ const darkVars: Record<string, string> = {
   '--color-error-900': '#FEF2F2',
 };
 
-function applyTheme(mode: ThemeMode) {
-  const vars = mode === 'dark' ? darkVars : lightVars;
+/* ─── Density / Font-size maps ───────────────────── */
+
+const densityMap: Record<string, string> = { compact: '0.85', comfortable: '1', spacious: '1.15' };
+const fontSizeMap: Record<string, string> = { small: '13px', normal: '15px', large: '17px' };
+
+/* ─── Apply helpers ──────────────────────────────── */
+
+function setVars(vars: Record<string, string>) {
   const root = document.documentElement;
-  for (const [key, value] of Object.entries(vars)) {
-    root.style.setProperty(key, value);
-  }
+  for (const [k, v] of Object.entries(vars)) root.style.setProperty(k, v);
+}
+
+function applyConfig(config: ThemeConfig) {
+  setVars(config.mode === 'dark' ? darkVars : lightVars);
+  setVars(accents[config.accent] ?? accents.blue);
+  const el = document.documentElement;
+  el.style.setProperty('--density-spacing', densityMap[config.density] ?? '1');
+  el.style.setProperty('--font-size-base', fontSizeMap[config.fontSize] ?? '15px');
+}
+
+function loadThemeConfig(): ThemeConfig {
+  const get = (k: string, fb: string) => { try { return localStorage.getItem(k) ?? fb; } catch { return fb; } };
+  return {
+    mode: (get('nexus-theme', 'light') === 'dark' ? 'dark' : 'light') as ThemeMode,
+    accent: get('nexus-accent', 'blue'),
+    density: get('nexus-density', 'comfortable'),
+    fontSize: get('nexus-font-size', 'normal'),
+  };
+}
+
+function saveConfig(config: ThemeConfig) {
+  try {
+    localStorage.setItem('nexus-theme', config.mode);
+    localStorage.setItem('nexus-accent', config.accent);
+    localStorage.setItem('nexus-density', config.density);
+    localStorage.setItem('nexus-font-size', config.fontSize);
+  } catch { /* noop */ }
 }
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mode, setModeState] = useState<ThemeMode>(() => {
-    const stored = localStorage.getItem('nexus-theme');
-    const initial: ThemeMode = (stored === 'dark' || stored === 'light') ? stored : 'light';
-    applyTheme(initial);
-    return initial;
+  const [config, setConfigState] = useState<ThemeConfig>(() => {
+    const c = loadThemeConfig();
+    applyConfig(c);
+    return c;
   });
 
-  const setMode = (m: ThemeMode) => {
-    setModeState(m);
-    localStorage.setItem('nexus-theme', m);
-    applyTheme(m);
-  };
+  const setMode = useCallback((mode: ThemeMode) => {
+    setConfigState(prev => {
+      const next = { ...prev, mode };
+      applyConfig(next);
+      saveConfig(next);
+      return next;
+    });
+  }, []);
 
-  const toggle = () => setMode(mode === 'light' ? 'dark' : 'light');
+  const setAccent = useCallback((accent: string) => {
+    setConfigState(prev => {
+      const next = { ...prev, accent };
+      applyConfig(next);
+      saveConfig(next);
+      return next;
+    });
+  }, []);
+
+  const setDensity = useCallback((density: string) => {
+    setConfigState(prev => {
+      const next = { ...prev, density };
+      applyConfig(next);
+      saveConfig(next);
+      return next;
+    });
+  }, []);
+
+  const setFontSize = useCallback((fontSize: string) => {
+    setConfigState(prev => {
+      const next = { ...prev, fontSize };
+      applyConfig(next);
+      saveConfig(next);
+      return next;
+    });
+  }, []);
+
+  const resetAll = useCallback(() => {
+    const defaults: ThemeConfig = { mode: 'light', accent: 'blue', density: 'comfortable', fontSize: 'normal' };
+    setConfigState(defaults);
+    applyConfig(defaults);
+    saveConfig(defaults);
+  }, []);
 
   return (
-    <ThemeContext.Provider value={{ mode, setMode, toggle }}>
+    <ThemeContext.Provider value={{ ...config, setMode, setAccent, setDensity, setFontSize, resetAll }}>
       {children}
     </ThemeContext.Provider>
   );
