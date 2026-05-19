@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Menu, X, Bell, MessageCircle, User, LogOut, Building2, CircleDollarSign } from 'lucide-react';
+import { Menu, X, Bell, MessageCircle, User, LogOut, Building2, CircleDollarSign, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Avatar } from '../ui/Avatar';
 import { Button } from '../ui/Button';
@@ -9,29 +9,23 @@ export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-  
+
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
-  
-  // User dashboard route based on role
-  const dashboardRoute = user?.role === 'entrepreneur' 
-    ? '/dashboard/entrepreneur' 
+
+  const dashboardRoute = user?.role === 'entrepreneur'
+    ? '/dashboard/entrepreneur'
     : '/dashboard/investor';
-  
-  // User profile route based on role and ID
-  const profileRoute = user 
-    ? `/profile/${user.role}/${user.id}` 
+
+  const profileRoute = user
+    ? `/profile/${user.role}/${user.id}`
     : '/login';
-  
+
   const navLinks = [
     {
-      icon: user?.role === 'entrepreneur' ? <Building2 size={18} /> : <CircleDollarSign size={18} />,
+      icon: <LayoutDashboard size={18} />,
       text: 'Dashboard',
       path: dashboardRoute,
     },
@@ -45,149 +39,137 @@ export const Navbar: React.FC = () => {
       text: 'Notifications',
       path: user ? '/notifications' : '/login',
     },
-    {
-      icon: <User size={18} />,
-      text: 'Profile',
-      path: profileRoute,
-    }
   ];
-  
+
   return (
-    <nav className="bg-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80">
+      <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          {/* Logo and brand */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary-600 rounded-md flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
+          {/* Logo */}
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-sm transition-transform duration-200 group-hover:scale-105">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
                   <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M16 21V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <span className="text-lg font-bold text-gray-900">Business Nexus</span>
+              <span className="text-lg font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                Nexus
+              </span>
             </Link>
           </div>
-          
-          {/* Desktop navigation */}
-          <div className="hidden md:flex md:items-center md:ml-6">
+
+          {/* Desktop nav */}
+          <div className="hidden md:flex md:items-center">
             {user ? (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center gap-1">
                 {navLinks.map((link, index) => (
                   <Link
                     key={index}
                     to={link.path}
-                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-md transition-colors duration-200"
+                    className="inline-flex items-center gap-2 px-3.5 py-2 text-sm font-medium text-gray-600 hover:text-primary-700 hover:bg-primary-50/60 rounded-lg transition-all duration-200"
                   >
-                    <span className="mr-2">{link.icon}</span>
+                    {link.icon}
                     {link.text}
                   </Link>
                 ))}
-                
-                <Button 
-                  variant="ghost"
-                  onClick={handleLogout}
-                  leftIcon={<LogOut size={18} />}
+
+                <div className="w-px h-6 bg-gray-200 mx-2" />
+
+                <Link
+                  to={profileRoute}
+                  className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
                 >
-                  Logout
-                </Button>
-                
-                <Link to={profileRoute} className="flex items-center space-x-2 ml-2">
                   <Avatar
                     src={user.avatarUrl}
                     alt={user.name}
                     size="sm"
                     status={user.isOnline ? 'online' : 'offline'}
+                    ring
                   />
-                  <span className="text-sm font-medium text-gray-700">{user.name}</span>
+                  <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{user.name}</span>
                 </Link>
+
+                <button
+                  onClick={handleLogout}
+                  className="ml-1 p-2 text-gray-400 hover:text-error-600 hover:bg-error-50 rounded-lg transition-all duration-200"
+                  title="Logout"
+                >
+                  <LogOut size={18} />
+                </button>
               </div>
             ) : (
-              <div className="flex items-center space-x-4">
-                <Link to="/login">
-                  <Button variant="outline">Log in</Button>
-                </Link>
-                <Link to="/register">
-                  <Button>Sign up</Button>
-                </Link>
+              <div className="flex items-center gap-3">
+                <Link to="/login"><Button variant="ghost">Log in</Button></Link>
+                <Link to="/register"><Button size="sm">Sign up</Button></Link>
               </div>
             )}
           </div>
-          
+
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button
-              onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-50 focus:outline-none"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200"
             >
-              {isMenuOpen ? (
-                <X className="block h-6 w-6" />
-              ) : (
-                <Menu className="block h-6 w-6" />
-              )}
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
       </div>
-      
+
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-b border-gray-200 animate-fade-in">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="md:hidden border-t border-gray-100 bg-white animate-fade-in-down">
+          <div className="px-4 py-3 space-y-1">
             {user ? (
               <>
-                <div className="flex items-center space-x-3 px-3 py-2">
-                  <Avatar
-                    src={user.avatarUrl}
-                    alt={user.name}
-                    size="sm"
-                    status={user.isOnline ? 'online' : 'offline'}
-                  />
+                <div className="flex items-center gap-3 px-3 py-3 mb-2 bg-gray-50 rounded-xl">
+                  <Avatar src={user.avatarUrl} alt={user.name} size="md" status={user.isOnline ? 'online' : 'offline'} />
                   <div>
-                    <p className="text-sm font-medium text-gray-800">{user.name}</p>
+                    <p className="text-sm font-semibold text-gray-900">{user.name}</p>
                     <p className="text-xs text-gray-500 capitalize">{user.role}</p>
                   </div>
                 </div>
-                
-                <div className="border-t border-gray-200 pt-2">
-                  {navLinks.map((link, index) => (
-                    <Link
-                      key={index}
-                      to={link.path}
-                      className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-md"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <span className="mr-3">{link.icon}</span>
-                      {link.text}
-                    </Link>
-                  ))}
-                  
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex w-full items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-md"
+
+                {navLinks.map((link, index) => (
+                  <Link
+                    key={index}
+                    to={link.path}
+                    className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-all duration-200"
+                    onClick={() => setIsMenuOpen(false)}
                   >
-                    <LogOut size={18} className="mr-3" />
+                    {link.icon}
+                    {link.text}
+                  </Link>
+                ))}
+
+                <Link
+                  to={profileRoute}
+                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-all duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <User size={18} />
+                  Profile
+                </Link>
+
+                <div className="pt-2 mt-2 border-t border-gray-100">
+                  <button
+                    onClick={() => { handleLogout(); setIsMenuOpen(false); }}
+                    className="flex w-full items-center gap-3 px-3 py-2.5 text-sm font-medium text-error-600 hover:bg-error-50 rounded-lg transition-all duration-200"
+                  >
+                    <LogOut size={18} />
                     Logout
                   </button>
                 </div>
               </>
             ) : (
-              <div className="flex flex-col space-y-2 px-3 py-2">
-                <Link 
-                  to="/login" 
-                  className="w-full"
-                  onClick={() => setIsMenuOpen(false)}
-                >
+              <div className="flex flex-col gap-2 px-3 py-3">
+                <Link to="/login" onClick={() => setIsMenuOpen(false)} className="w-full">
                   <Button variant="outline" fullWidth>Log in</Button>
                 </Link>
-                <Link 
-                  to="/register" 
-                  className="w-full"
-                  onClick={() => setIsMenuOpen(false)}
-                >
+                <Link to="/register" onClick={() => setIsMenuOpen(false)} className="w-full">
                   <Button fullWidth>Sign up</Button>
                 </Link>
               </div>

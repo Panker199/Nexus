@@ -1,158 +1,104 @@
 import React from 'react';
-import { Search, Book, MessageCircle, Phone, Mail, ExternalLink } from 'lucide-react';
+import { Search, Book, MessageCircle, Phone, Mail, ExternalLink, HelpCircle, ChevronDown } from 'lucide-react';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
+import { useState } from 'react';
 
 const faqs = [
-  {
-    question: 'How do I connect with investors?',
-    answer: 'You can browse our investor directory and send connection requests. Once an investor accepts, you can start messaging them directly through our platform.'
-  },
-  {
-    question: 'What should I include in my startup profile?',
-    answer: 'Your startup profile should include a compelling pitch, funding needs, team information, market opportunity, and any traction or metrics that demonstrate your progress.'
-  },
-  {
-    question: 'How do I share documents securely?',
-    answer: 'You can upload documents to your secure document vault and selectively share them with connected investors. All documents are encrypted and access-controlled.'
-  },
-  {
-    question: 'What are collaboration requests?',
-    answer: 'Collaboration requests are formal expressions of interest from investors. They indicate that an investor wants to learn more about your startup and potentially discuss investment opportunities.'
-  }
+  { question: 'How do I connect with investors?', answer: 'Browse our investor directory and send connection requests. Once accepted, you can message them directly.' },
+  { question: 'What should I include in my startup profile?', answer: 'Include a compelling pitch, funding needs, team information, market opportunity, and any traction metrics.' },
+  { question: 'How do I share documents securely?', answer: 'Upload documents to your secure vault and selectively share with connected investors. All documents are encrypted.' },
+  { question: 'What are collaboration requests?', answer: 'Formal expressions of interest from investors indicating they want to learn more about your startup.' },
 ];
 
 export const HelpPage: React.FC = () => {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in-up">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Help & Support</h1>
-        <p className="text-gray-600">Find answers to common questions or get in touch with our support team</p>
+        <p className="text-gray-500 mt-0.5">Find answers or get in touch</p>
       </div>
-      
+
       {/* Search */}
-      <div className="max-w-2xl">
-        <Input
-          placeholder="Search help articles..."
-          startAdornment={<Search size={18} />}
-          fullWidth
-        />
+      <div className="max-w-xl">
+        <Input placeholder="Search help articles..." startAdornment={<Search size={18} />} fullWidth />
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Quick links */}
-        <Card>
-          <CardBody className="text-center p-6">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-primary-50 rounded-lg mb-4">
-              <Book size={24} className="text-primary-600" />
-            </div>
-            <h2 className="text-lg font-medium text-gray-900">Documentation</h2>
-            <p className="text-sm text-gray-600 mt-2">
-              Browse our detailed documentation and guides
-            </p>
-            <Button
-              variant="outline"
-              className="mt-4"
-              rightIcon={<ExternalLink size={16} />}
-            >
-              View Docs
-            </Button>
-          </CardBody>
-        </Card>
-        
-        <Card>
-          <CardBody className="text-center p-6">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-primary-50 rounded-lg mb-4">
-              <MessageCircle size={24} className="text-primary-600" />
-            </div>
-            <h2 className="text-lg font-medium text-gray-900">Live Chat</h2>
-            <p className="text-sm text-gray-600 mt-2">
-              Chat with our support team in real-time
-            </p>
-            <Button className="mt-4">
-              Start Chat
-            </Button>
-          </CardBody>
-        </Card>
-        
-        <Card>
-          <CardBody className="text-center p-6">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-primary-50 rounded-lg mb-4">
-              <Phone size={24} className="text-primary-600" />
-            </div>
-            <h2 className="text-lg font-medium text-gray-900">Contact Us</h2>
-            <p className="text-sm text-gray-600 mt-2">
-              Get help via email or phone
-            </p>
-            <Button
-              variant="outline"
-              className="mt-4"
-              leftIcon={<Mail size={16} />}
-            >
-              Contact Support
-            </Button>
-          </CardBody>
-        </Card>
+
+      {/* Quick links */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { icon: Book, title: 'Documentation', desc: 'Browse detailed guides', action: 'View Docs' },
+          { icon: MessageCircle, title: 'Live Chat', desc: 'Chat with support in real-time', action: 'Start Chat' },
+          { icon: Phone, title: 'Contact Us', desc: 'Email or phone support', action: 'Contact Support' },
+        ].map((item, i) => {
+          const Icon = item.icon;
+          return (
+            <Card key={i} hoverable>
+              <CardBody className="text-center p-6">
+                <div className="mx-auto w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center mb-3">
+                  <Icon size={24} className="text-primary-600" />
+                </div>
+                <h3 className="text-base font-semibold text-gray-900">{item.title}</h3>
+                <p className="text-sm text-gray-500 mt-1">{item.desc}</p>
+                <Button variant={i === 1 ? 'primary' : 'outline'} size="sm" className="mt-4" rightIcon={i === 0 ? <ExternalLink size={14} /> : undefined}>
+                  {item.action}
+                </Button>
+              </CardBody>
+            </Card>
+          );
+        })}
       </div>
-      
+
       {/* FAQs */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-medium text-gray-900">Frequently Asked Questions</h2>
+          <h2 className="text-lg font-semibold text-gray-900">FAQs</h2>
         </CardHeader>
         <CardBody>
-          <div className="space-y-6">
+          <div className="space-y-2">
             {faqs.map((faq, index) => (
-              <div key={index} className="border-b border-gray-200 last:border-0 pb-6 last:pb-0">
-                <h3 className="text-base font-medium text-gray-900 mb-2">
-                  {faq.question}
-                </h3>
-                <p className="text-gray-600">
-                  {faq.answer}
-                </p>
+              <div key={index} className="border border-gray-100 rounded-xl overflow-hidden">
+                <button
+                  className="w-full flex items-center justify-between px-5 py-3.5 text-left transition-colors hover:bg-gray-50"
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                >
+                  <span className="text-sm font-medium text-gray-900">{faq.question}</span>
+                  <ChevronDown size={16} className={`text-gray-400 transition-transform duration-200 ${openFaq === index ? 'rotate-180' : ''}`} />
+                </button>
+                {openFaq === index && (
+                  <div className="px-5 pb-4 animate-fade-in-down">
+                    <p className="text-sm text-gray-600 leading-relaxed">{faq.answer}</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </CardBody>
       </Card>
-      
+
       {/* Contact form */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-medium text-gray-900">Still need help?</h2>
+          <h2 className="text-lg font-semibold text-gray-900">Still need help?</h2>
         </CardHeader>
         <CardBody>
-          <form className="space-y-6 max-w-2xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Input
-                label="Name"
-                placeholder="Your name"
-              />
-              
-              <Input
-                label="Email"
-                type="email"
-                placeholder="your@email.com"
-              />
+          <form className="space-y-5 max-w-xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <Input label="Name" placeholder="Your name" />
+              <Input label="Email" type="email" placeholder="your@email.com" />
             </div>
-            
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Message
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Message</label>
               <textarea
-                className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                className="w-full rounded-xl border-gray-200 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200 sm:text-sm px-4 py-2.5"
                 rows={4}
                 placeholder="How can we help you?"
-              ></textarea>
+              />
             </div>
-            
-            <div>
-              <Button>
-                Send Message
-              </Button>
-            </div>
+            <Button>Send Message</Button>
           </form>
         </CardBody>
       </Card>

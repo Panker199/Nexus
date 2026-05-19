@@ -13,13 +13,15 @@ export const Card: React.FC<CardProps> = ({
   onClick,
   hoverable = false,
 }) => {
-  const hoverableClass = hoverable ? 'transform hover:-translate-y-1 transition-transform duration-300 cursor-pointer' : '';
-  const clickableClass = onClick ? 'cursor-pointer' : '';
-  
+  const hoverableClass = hoverable ? 'cursor-pointer hover:shadow-soft-lg transition-all duration-200' : '';
+
   return (
-    <div 
-      className={`bg-white rounded-lg shadow-md overflow-hidden ${hoverableClass} ${clickableClass} ${className}`}
+    <div
+      className={`bg-white rounded-xl border border-gray-100 shadow-soft flex flex-col ${hoverableClass} ${className}`}
       onClick={onClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') onClick(); } : undefined}
     >
       {children}
     </div>
@@ -36,7 +38,7 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`px-6 py-4 border-b border-gray-200 ${className}`}>
+    <div className={`px-6 py-5 border-b border-gray-100 ${className}`}>
       {children}
     </div>
   );
@@ -52,7 +54,7 @@ export const CardBody: React.FC<CardBodyProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`px-6 py-4 ${className}`}>
+    <div className={`px-6 py-5 ${className}`}>
       {children}
     </div>
   );
@@ -68,7 +70,7 @@ export const CardFooter: React.FC<CardFooterProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`px-6 py-4 border-t border-gray-200 ${className}`}>
+    <div className={`px-6 py-4 border-t border-gray-100 ${className}`}>
       {children}
     </div>
   );

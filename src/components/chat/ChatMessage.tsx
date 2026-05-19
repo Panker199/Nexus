@@ -11,45 +11,31 @@ interface ChatMessageProps {
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ message, isCurrentUser }) => {
   const user = findUserById(message.senderId);
-  
   if (!user) return null;
-  
+
   return (
-    <div
-      className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} mb-4 animate-fade-in`}
-    >
+    <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} items-end gap-2 animate-fade-in-up`}>
       {!isCurrentUser && (
-        <Avatar
-          src={user.avatarUrl}
-          alt={user.name}
-          size="sm"
-          className="mr-2 self-end"
-        />
+        <Avatar src={user.avatarUrl} alt={user.name} size="sm" className="flex-shrink-0 mb-1" />
       )}
-      
-      <div className={`flex flex-col ${isCurrentUser ? 'items-end' : 'items-start'}`}>
+
+      <div className={`flex flex-col ${isCurrentUser ? 'items-end' : 'items-start'} max-w-[70%]`}>
         <div
-          className={`max-w-xs sm:max-w-md px-4 py-2 rounded-lg ${
+          className={`px-4 py-2.5 text-sm leading-relaxed ${
             isCurrentUser
-              ? 'bg-primary-600 text-white rounded-br-none'
-              : 'bg-gray-100 text-gray-800 rounded-bl-none'
+              ? 'bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-2xl rounded-br-sm shadow-sm'
+              : 'bg-white text-gray-800 rounded-2xl rounded-bl-sm border border-gray-100 shadow-sm'
           }`}
         >
-          <p className="text-sm">{message.content}</p>
+          {message.content}
         </div>
-        
-        <span className="text-xs text-gray-500 mt-1">
+        <span className={`text-[10px] text-gray-400 mt-1 ${isCurrentUser ? 'mr-1' : 'ml-1'}`}>
           {formatDistanceToNow(new Date(message.timestamp), { addSuffix: true })}
         </span>
       </div>
-      
+
       {isCurrentUser && (
-        <Avatar
-          src={user.avatarUrl}
-          alt={user.name}
-          size="sm"
-          className="ml-2 self-end"
-        />
+        <Avatar src={user.avatarUrl} alt={user.name} size="sm" className="flex-shrink-0 mb-1" />
       )}
     </div>
   );

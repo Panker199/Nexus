@@ -1,31 +1,27 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { getConversationsForUser } from '../../data/messages';
 import { ChatUserList } from '../../components/chat/ChatUserList';
-// import { MessageCircle } from 'lucide-react';
 
 export const MessagesPage: React.FC = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
-  
   if (!user) return null;
-  
+
   const conversations = getConversationsForUser(user.id);
-  
+
   return (
-    <div className="h-[calc(100vh-8rem)] bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden animate-fade-in">
+    <div className="h-[calc(100vh-10rem)] bg-white rounded-2xl border border-gray-100 shadow-soft overflow-hidden animate-fade-in">
       {conversations.length > 0 ? (
         <ChatUserList conversations={conversations} />
       ) : (
-        <div className="h-full flex flex-col items-center justify-center p-8">
-          <div className="bg-gray-100 p-6 rounded-full mb-4">
-            {/* <MessageCircle size={32} className="text-gray-400" /> */}
+        <div className="h-full flex flex-col items-center justify-center">
+          <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
+            <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
           </div>
-          <h2 className="text-xl font-medium text-gray-900">No messages yet</h2>
-          <p className="text-gray-600 text-center mt-2">
-            Start connecting with entrepreneurs and investors to begin conversations
-          </p>
+          <h2 className="text-lg font-semibold text-gray-900">No messages yet</h2>
+          <p className="text-sm text-gray-500 mt-1">Start connecting with investors and entrepreneurs</p>
         </div>
       )}
     </div>

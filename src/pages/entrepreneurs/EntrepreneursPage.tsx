@@ -10,24 +10,20 @@ export const EntrepreneursPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [selectedFundingRange, setSelectedFundingRange] = useState<string[]>([]);
-  
-  // Get unique industries and funding ranges
+
   const allIndustries = Array.from(new Set(entrepreneurs.map(e => e.industry)));
   const fundingRanges = ['< $500K', '$500K - $1M', '$1M - $5M', '> $5M'];
-  
-  // Filter entrepreneurs based on search and filters
+
   const filteredEntrepreneurs = entrepreneurs.filter(entrepreneur => {
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch = searchQuery === '' ||
       entrepreneur.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       entrepreneur.startupName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      entrepreneur.industry.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      entrepreneur.pitchSummary.toLowerCase().includes(searchQuery.toLowerCase());
-    
+      entrepreneur.industry.toLowerCase().includes(searchQuery.toLowerCase());
+
     const matchesIndustry = selectedIndustries.length === 0 ||
       selectedIndustries.includes(entrepreneur.industry);
-    
-    // Simple funding range filter based on the amount string
-    const matchesFunding = selectedFundingRange.length === 0 || 
+
+    const matchesFunding = selectedFundingRange.length === 0 ||
       selectedFundingRange.some(range => {
         const amount = parseInt(entrepreneur.fundingNeeded.replace(/[^0-9]/g, ''));
         switch (range) {
@@ -38,52 +34,44 @@ export const EntrepreneursPage: React.FC = () => {
           default: return true;
         }
       });
-    
+
     return matchesSearch && matchesIndustry && matchesFunding;
   });
-  
+
   const toggleIndustry = (industry: string) => {
-    setSelectedIndustries(prev => 
-      prev.includes(industry)
-        ? prev.filter(i => i !== industry)
-        : [...prev, industry]
-    );
+    setSelectedIndustries(prev => prev.includes(industry) ? prev.filter(i => i !== industry) : [...prev, industry]);
   };
-  
+
   const toggleFundingRange = (range: string) => {
-    setSelectedFundingRange(prev => 
-      prev.includes(range)
-        ? prev.filter(r => r !== range)
-        : [...prev, range]
-    );
+    setSelectedFundingRange(prev => prev.includes(range) ? prev.filter(r => r !== range) : [...prev, range]);
   };
-  
+
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in-up">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Find Startups</h1>
-        <p className="text-gray-600">Discover promising startups looking for investment</p>
+        <p className="text-gray-500 mt-0.5">Discover promising startups looking for investment</p>
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Filters sidebar */}
-        <div className="space-y-6">
+        {/* Filters */}
+        <div className="space-y-4">
           <Card>
             <CardHeader>
-              <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+              <h2 className="text-sm font-semibold text-gray-900">Filters</h2>
             </CardHeader>
-            <CardBody className="space-y-6">
+            <CardBody className="space-y-5">
               <div>
-                <h3 className="text-sm font-medium text-gray-900 mb-2">Industry</h3>
-                <div className="space-y-2">
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Industry</h3>
+                <div className="space-y-1">
                   {allIndustries.map(industry => (
                     <button
                       key={industry}
                       onClick={() => toggleIndustry(industry)}
-                      className={`block w-full text-left px-3 py-2 rounded-md text-sm ${
+                      className={`block w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
                         selectedIndustries.includes(industry)
-                          ? 'bg-primary-50 text-primary-700'
-                          : 'text-gray-700 hover:bg-gray-50'
+                          ? 'bg-primary-50 text-primary-700 font-medium'
+                          : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
                       {industry}
@@ -91,18 +79,18 @@ export const EntrepreneursPage: React.FC = () => {
                   ))}
                 </div>
               </div>
-              
+
               <div>
-                <h3 className="text-sm font-medium text-gray-900 mb-2">Funding Range</h3>
-                <div className="space-y-2">
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Funding Range</h3>
+                <div className="space-y-1">
                   {fundingRanges.map(range => (
                     <button
                       key={range}
                       onClick={() => toggleFundingRange(range)}
-                      className={`block w-full text-left px-3 py-2 rounded-md text-sm ${
+                      className={`block w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
                         selectedFundingRange.includes(range)
-                          ? 'bg-primary-50 text-primary-700'
-                          : 'text-gray-700 hover:bg-gray-50'
+                          ? 'bg-primary-50 text-primary-700 font-medium'
+                          : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
                       {range}
@@ -110,55 +98,51 @@ export const EntrepreneursPage: React.FC = () => {
                   ))}
                 </div>
               </div>
-              
+
               <div>
-                <h3 className="text-sm font-medium text-gray-900 mb-2">Location</h3>
-                <div className="space-y-2">
-                  <button className="flex items-center w-full text-left px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                    <MapPin size={16} className="mr-2" />
-                    San Francisco, CA
-                  </button>
-                  <button className="flex items-center w-full text-left px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                    <MapPin size={16} className="mr-2" />
-                    New York, NY
-                  </button>
-                  <button className="flex items-center w-full text-left px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                    <MapPin size={16} className="mr-2" />
-                    Boston, MA
-                  </button>
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Location</h3>
+                <div className="space-y-1">
+                  {['San Francisco, CA', 'New York, NY', 'Boston, MA'].map((loc, i) => (
+                    <button key={i} className="flex items-center w-full text-left px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                      <MapPin size={14} className="mr-2 text-gray-400" />
+                      {loc}
+                    </button>
+                  ))}
                 </div>
               </div>
             </CardBody>
           </Card>
         </div>
-        
-        {/* Main content */}
+
+        {/* Main */}
         <div className="lg:col-span-3 space-y-6">
           <div className="flex items-center gap-4">
             <Input
-              placeholder="Search startups by name, industry, or keywords..."
+              placeholder="Search startups by name, industry..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               startAdornment={<Search size={18} />}
               fullWidth
             />
-            
-            <div className="flex items-center gap-2">
-              <Filter size={18} className="text-gray-500" />
-              <span className="text-sm text-gray-600">
-                {filteredEntrepreneurs.length} results
-              </span>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Filter size={16} className="text-gray-400" />
+              <span className="text-sm text-gray-500">{filteredEntrepreneurs.length} results</span>
             </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredEntrepreneurs.map(entrepreneur => (
-              <EntrepreneurCard
-                key={entrepreneur.id}
-                entrepreneur={entrepreneur}
-              />
-            ))}
-          </div>
+
+          {filteredEntrepreneurs.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredEntrepreneurs.map(entrepreneur => (
+                <EntrepreneurCard key={entrepreneur.id} entrepreneur={entrepreneur} />
+              ))}
+            </div>
+          ) : (
+            <Card>
+              <CardBody className="text-center py-8">
+                <p className="text-gray-500">No startups match your filters</p>
+              </CardBody>
+            </Card>
+          )}
         </div>
       </div>
     </div>

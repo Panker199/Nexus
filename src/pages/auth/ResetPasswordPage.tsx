@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Lock } from 'lucide-react';
+import { Lock, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
@@ -11,48 +11,34 @@ export const ResetPasswordPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  
+
   const { resetPassword } = useAuth();
   const token = searchParams.get('token');
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!token) {
-      return;
-    }
-    
-    if (password !== confirmPassword) {
-      return;
-    }
-    
+    if (!token || password !== confirmPassword) return;
     setIsLoading(true);
-    
     try {
       await resetPassword(token, password);
       navigate('/login');
-    } catch (error) {
-      // Error is handled by the AuthContext
+    } catch {
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   if (!token) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-primary-50/30 to-accent-50/30 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-gray-900">
-              Invalid reset link
-            </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              This password reset link is invalid or has expired.
-            </p>
-            <Button
-              className="mt-4"
-              onClick={() => navigate('/forgot-password')}
-            >
+          <div className="bg-white py-8 px-6 sm:px-10 rounded-2xl shadow-soft-lg border border-gray-100 text-center">
+            <div className="mx-auto w-14 h-14 rounded-2xl bg-error-50 flex items-center justify-center mb-4">
+              <AlertCircle size={32} className="text-error-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900">Invalid reset link</h2>
+            <p className="mt-2 text-sm text-gray-600">This password reset link is invalid or has expired.</p>
+            <Button className="mt-6" onClick={() => navigate('/forgot-password')}>
               Request new reset link
             </Button>
           </div>
@@ -60,22 +46,24 @@ export const ResetPasswordPage: React.FC = () => {
       </div>
     );
   }
-  
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center">
-          <Lock className="mx-auto h-12 w-12 text-primary-600" />
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-            Reset your password
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Enter your new password below
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-primary-50/30 to-accent-50/30 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-primary-100/40 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-accent-100/40 blur-3xl" />
+      </div>
+      <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="flex flex-col items-center">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-soft-lg shadow-primary-500/20">
+            <Lock size={28} className="text-white" />
+          </div>
+          <h2 className="mt-5 text-center text-3xl font-bold text-gray-900">Set new password</h2>
+          <p className="mt-1.5 text-center text-sm text-gray-500">Must be at least 8 characters.</p>
         </div>
-        
-        <div className="mt-8 bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+
+        <div className="mt-8 bg-white py-8 px-6 sm:px-10 rounded-2xl shadow-soft-lg border border-gray-100">
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <Input
               label="New password"
               type="password"
@@ -85,7 +73,6 @@ export const ResetPasswordPage: React.FC = () => {
               fullWidth
               startAdornment={<Lock size={18} />}
             />
-            
             <Input
               label="Confirm new password"
               type="password"
@@ -94,14 +81,9 @@ export const ResetPasswordPage: React.FC = () => {
               required
               fullWidth
               startAdornment={<Lock size={18} />}
-              error={password !== confirmPassword ? 'Passwords do not match' : undefined}
+              error={confirmPassword && password !== confirmPassword ? 'Passwords do not match' : undefined}
             />
-            
-            <Button
-              type="submit"
-              fullWidth
-              isLoading={isLoading}
-            >
+            <Button type="submit" fullWidth isLoading={isLoading}>
               Reset password
             </Button>
           </form>

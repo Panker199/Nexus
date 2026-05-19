@@ -10,71 +10,59 @@ export const InvestorsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStages, setSelectedStages] = useState<string[]>([]);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  
-  // Get unique investment stages and interests
+
   const allStages = Array.from(new Set(investors.flatMap(i => i.investmentStage)));
   const allInterests = Array.from(new Set(investors.flatMap(i => i.investmentInterests)));
-  
-  // Filter investors based on search and filters
+
   const filteredInvestors = investors.filter(investor => {
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch = searchQuery === '' ||
       investor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       investor.bio.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      investor.investmentInterests.some(interest => 
-        interest.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    
+      investor.investmentInterests.some(i => i.toLowerCase().includes(searchQuery.toLowerCase()));
+
     const matchesStages = selectedStages.length === 0 ||
-      investor.investmentStage.some(stage => selectedStages.includes(stage));
-    
+      investor.investmentStage.some(s => selectedStages.includes(s));
+
     const matchesInterests = selectedInterests.length === 0 ||
-      investor.investmentInterests.some(interest => selectedInterests.includes(interest));
-    
+      investor.investmentInterests.some(i => selectedInterests.includes(i));
+
     return matchesSearch && matchesStages && matchesInterests;
   });
-  
+
   const toggleStage = (stage: string) => {
-    setSelectedStages(prev => 
-      prev.includes(stage)
-        ? prev.filter(s => s !== stage)
-        : [...prev, stage]
-    );
+    setSelectedStages(prev => prev.includes(stage) ? prev.filter(s => s !== stage) : [...prev, stage]);
   };
-  
+
   const toggleInterest = (interest: string) => {
-    setSelectedInterests(prev => 
-      prev.includes(interest)
-        ? prev.filter(i => i !== interest)
-        : [...prev, interest]
-    );
+    setSelectedInterests(prev => prev.includes(interest) ? prev.filter(i => i !== interest) : [...prev, interest]);
   };
-  
+
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in-up">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Find Investors</h1>
-        <p className="text-gray-600">Connect with investors who match your startup's needs</p>
+        <p className="text-gray-500 mt-0.5">Connect with investors who match your startup</p>
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Filters sidebar */}
-        <div className="space-y-6">
+        <div className="space-y-4">
           <Card>
             <CardHeader>
-              <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+              <h2 className="text-sm font-semibold text-gray-900">Filters</h2>
             </CardHeader>
-            <CardBody className="space-y-6">
+            <CardBody className="space-y-5">
               <div>
-                <h3 className="text-sm font-medium text-gray-900 mb-2">Investment Stage</h3>
-                <div className="space-y-2">
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Stage</h3>
+                <div className="space-y-1">
                   {allStages.map(stage => (
                     <button
                       key={stage}
                       onClick={() => toggleStage(stage)}
-                      className={`block w-full text-left px-3 py-2 rounded-md text-sm ${
+                      className={`block w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
                         selectedStages.includes(stage)
-                          ? 'bg-primary-50 text-primary-700'
-                          : 'text-gray-700 hover:bg-gray-50'
+                          ? 'bg-primary-50 text-primary-700 font-medium'
+                          : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
                       {stage}
@@ -82,15 +70,15 @@ export const InvestorsPage: React.FC = () => {
                   ))}
                 </div>
               </div>
-              
+
               <div>
-                <h3 className="text-sm font-medium text-gray-900 mb-2">Investment Interests</h3>
-                <div className="flex flex-wrap gap-2">
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Interests</h3>
+                <div className="flex flex-wrap gap-1.5">
                   {allInterests.map(interest => (
                     <Badge
                       key={interest}
                       variant={selectedInterests.includes(interest) ? 'primary' : 'gray'}
-                      className="cursor-pointer"
+                      className="cursor-pointer select-none"
                       onClick={() => toggleInterest(interest)}
                     >
                       {interest}
@@ -98,55 +86,51 @@ export const InvestorsPage: React.FC = () => {
                   ))}
                 </div>
               </div>
-              
+
               <div>
-                <h3 className="text-sm font-medium text-gray-900 mb-2">Location</h3>
-                <div className="space-y-2">
-                  <button className="flex items-center w-full text-left px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                    <MapPin size={16} className="mr-2" />
-                    San Francisco, CA
-                  </button>
-                  <button className="flex items-center w-full text-left px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                    <MapPin size={16} className="mr-2" />
-                    New York, NY
-                  </button>
-                  <button className="flex items-center w-full text-left px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                    <MapPin size={16} className="mr-2" />
-                    Boston, MA
-                  </button>
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Location</h3>
+                <div className="space-y-1">
+                  {['San Francisco, CA', 'New York, NY', 'Boston, MA'].map((loc, i) => (
+                    <button key={i} className="flex items-center w-full text-left px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                      <MapPin size={14} className="mr-2 text-gray-400" />
+                      {loc}
+                    </button>
+                  ))}
                 </div>
               </div>
             </CardBody>
           </Card>
         </div>
-        
+
         {/* Main content */}
         <div className="lg:col-span-3 space-y-6">
           <div className="flex items-center gap-4">
             <Input
-              placeholder="Search investors by name, interests, or keywords..."
+              placeholder="Search investors by name, interests..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               startAdornment={<Search size={18} />}
               fullWidth
             />
-            
-            <div className="flex items-center gap-2">
-              <Filter size={18} className="text-gray-500" />
-              <span className="text-sm text-gray-600">
-                {filteredInvestors.length} results
-              </span>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Filter size={16} className="text-gray-400" />
+              <span className="text-sm text-gray-500">{filteredInvestors.length} results</span>
             </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredInvestors.map(investor => (
-              <InvestorCard
-                key={investor.id}
-                investor={investor}
-              />
-            ))}
-          </div>
+
+          {filteredInvestors.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredInvestors.map(investor => (
+                <InvestorCard key={investor.id} investor={investor} />
+              ))}
+            </div>
+          ) : (
+            <Card>
+              <CardBody className="text-center py-8">
+                <p className="text-gray-500">No investors match your filters</p>
+              </CardBody>
+            </Card>
+          )}
         </div>
       </div>
     </div>
