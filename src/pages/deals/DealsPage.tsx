@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Search, DollarSign, TrendingUp, Users, Calendar, Briefcase } from 'lucide-react';
+import { Search, DollarSign, TrendingUp, Users, Calendar, Briefcase, ShieldCheck } from 'lucide-react';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Avatar } from '../../components/ui/Avatar';
+import { Modal } from '../../components/ui/Modal';
 import { useAuth } from '../../context/AuthContext';
 import { deals, updateDealStatus } from '../../data/deals';
 import { findUserById } from '../../data/users';
+import { addTransaction } from '../../data/payments';
 import { Deal } from '../../types';
 
 const statStyles = {
@@ -21,6 +23,8 @@ export const DealsPage: React.FC = () => {
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
+  const [fundingDeal, setFundingDeal] = useState<Deal | null>(null);
+  const [fundAmount, setFundAmount] = useState('');
 
   const statuses = ['Due Diligence', 'Term Sheet', 'Negotiation', 'Closed', 'Passed'];
 
@@ -49,6 +53,21 @@ export const DealsPage: React.FC = () => {
     const matchesStatus = selectedStatus.length === 0 || selectedStatus.includes(deal.status);
     return matchesSearch && matchesStatus;
   });
+
+  const handleFundDeal = () => {
+    if (!fundingDeal || !user || !fundAmount) return;
+    addTransaction({
+      type: 'funding',
+      amount: fundAmount.replace(/[^0-9.]/g, ''),
+      senderId: user.id,
+      receiverId: fundingDeal.entrepreneurId,
+      description: `Funding: ${fundingDeal.startupName}`,
+      status: 'completed',
+    });
+    updateDealStatus(fundingDeal.id, 'Closed');
+    setFundingDeal(null);
+    setFundAmount('');
+  };
 
   const totalInvestment = userDeals.reduce((sum, d) => {
     const num = parseFloat(d.amount.replace(/[$,MK]/g, m => m === 'M' ? '' : m === 'K' ? '' : ''));
@@ -175,7 +194,14 @@ export const DealsPage: React.FC = () => {
                         {new Date(deal.lastActivity).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right">
-                        <Button variant="outline" size="xs">Details</Button>
+                        <div className="flex items-center justify-end gap-2">
+                          <Button variant="outline" size="xs">Details</Button>
+                          {user?.role === 'investor' && ['Term Sheet', 'Negotiation'].includes(deal.status) && (
+                            <Button variant="success" size="xs" onClick={() => setFundingDeal(deal)} leftIcon={<ShieldCheck size={14} />}>
+                              Fund
+                            </Button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -193,6 +219,36 @@ export const DealsPage: React.FC = () => {
           )}
         </CardBody>
       </Card>
+
+      {/* Fund Deal Modal */}
+      <Modal open={!!fundingDeal} onClose={() => { setFundingDeal(null); setFundAmount(''); }} title={`Fund ${fundingDeal?.startupName ?? ''}`} maxWidth="max-w-md">
+        <div className="space-y-4">
+          <div className="bg-success-50 border border-success-200 rounded p-3 text-sm text-success-700 flex items-start gap-2">
+            <ShieldCheck size={16} className="mt-0.5 shrink-0" />
+            <span>Complete the funding for this deal. The amount will be transferred from your wallet.</span>
+          </div>
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div><span className="text-gray-500">Startup:</span> <span className="font-medium text-gray-900 ml-1">{fundingDeal?.startupName}</span></div>
+            <div><span className="text-gray-500">Status:</span> <span className="font-medium text-gray-900 ml-1">{fundingDeal?.status}</span></div>
+            <div><span className="text-gray-500">Amount:</span> <span className="font-medium text-gray-900 ml-1">{fundingDeal?.amount}</span></div>
+            <div><span className="text-gray-500">Equity:</span> <span className="font-medium text-gray-900 ml-1">{fundingDeal?.equity}</span></div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Funding Amount ($)</label>
+            <input
+              type="text"
+              value={fundAmount}
+              onChange={e => setFundAmount(e.target.value)}
+              placeholder="e.g. 50000"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+            />
+          </div>
+          <div className="flex justify-end gap-3 pt-2">
+            <Button variant="ghost" onClick={() => { setFundingDeal(null); setFundAmount(''); }}>Cancel</Button>
+            <Button variant="success" onClick={handleFundDeal} disabled={!fundAmount}>Complete Funding</Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

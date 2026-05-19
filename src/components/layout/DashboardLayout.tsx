@@ -1,11 +1,34 @@
 import React from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
+import { Walkthrough } from '../ui/Walkthrough';
 
 export const DashboardLayout: React.FC = () => {
   const { user, isAuthenticated, isLoading } = useAuth();
+  const location = useLocation();
+
+  const walkthroughs: Record<string, { steps: { title: string; description: string }[]; storageKey: string }> = {
+    '/dashboard/entrepreneur': {
+      storageKey: 'entrepreneur_dash',
+      steps: [
+        { title: 'Your Dashboard', description: 'This is your command center. View pending requests, active deals, and startup metrics at a glance.' },
+        { title: 'Stats Overview', description: 'Track your progress with key metrics like pending requests, connections, and wallet balance.' },
+        { title: 'Find Investors', description: 'Use the sidebar to browse investors and send collaboration requests to fund your startup.' },
+      ],
+    },
+    '/dashboard/investor': {
+      storageKey: 'investor_dash',
+      steps: [
+        { title: 'Your Dashboard', description: 'Discover promising startups and manage your investment pipeline from one place.' },
+        { title: 'Discover Startups', description: 'Search and filter startups by industry to find the best investment opportunities.' },
+        { title: 'Manage Deals', description: 'Track your active deals and fund promising startups directly from the Deals page.' },
+      ],
+    },
+  };
+
+  const activeWalkthrough = walkthroughs[location.pathname];
 
   if (isLoading) {
     return (
@@ -38,6 +61,9 @@ export const DashboardLayout: React.FC = () => {
           </div>
         </main>
       </div>
+      {activeWalkthrough && (
+        <Walkthrough steps={activeWalkthrough.steps} storageKey={activeWalkthrough.storageKey} />
+      )}
     </div>
   );
 };
