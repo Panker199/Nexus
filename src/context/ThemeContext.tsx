@@ -12,6 +12,7 @@ interface ThemeConfig {
 interface ThemeContextType extends ThemeConfig {
   setMode: (mode: ThemeMode) => void;
   setAccent: (accent: string) => void;
+  setCustomColor: (hex: string) => void;
   setDensity: (density: string) => void;
   setFontSize: (fontSize: string) => void;
   resetAll: () => void;
@@ -119,6 +120,37 @@ const darkVars: Record<string, string> = {
 const densityMap: Record<string, string> = { compact: '0.85', comfortable: '1', spacious: '1.15' };
 const fontSizeMap: Record<string, string> = { small: '13px', normal: '15px', large: '17px' };
 
+/* ─── Custom palette generator ──────────────────────── */
+
+function hexToRgb(hex: string): [number, number, number] {
+  const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return r ? [parseInt(r[1], 16), parseInt(r[2], 16), parseInt(r[3], 16)] : [59, 130, 246];
+}
+
+function rgbToHex(r: number, g: number, b: number): string {
+  return '#' + [r, g, b].map(x => Math.round(x).toString(16).padStart(2, '0')).join('');
+}
+
+function blend(c1: [number, number, number], c2: [number, number, number], t: number): [number, number, number] {
+  return [c1[0] + (c2[0] - c1[0]) * t, c1[1] + (c2[1] - c1[1]) * t, c1[2] + (c2[2] - c1[2]) * t];
+}
+
+function generatePalette(hex: string): Record<string, string> {
+  const base = hexToRgb(hex);
+  const white: [number, number, number] = [255, 255, 255];
+  const black: [number, number, number] = [0, 0, 0];
+  const stops: Record<string, number> = {
+    '50': 0.05, '100': 0.1, '200': 0.2, '300': 0.35, '400': 0.55,
+    '500': 1, '600': 1.2, '700': 1.4, '800': 1.6, '900': 1.8, '950': 1.95,
+  };
+  const vars: Record<string, string> = {};
+  for (const [shade, t] of Object.entries(stops)) {
+    const c = t <= 1 ? blend(white, base, t) : blend(base, black, t - 1);
+    vars[`--color-primary-${shade}`] = rgbToHex(...c);
+  }
+  return vars;
+}
+
 /* ─── Apply helpers ──────────────────────────────── */
 
 function getEffectiveMode(mode: ThemeMode): 'light' | 'dark' {
@@ -133,9 +165,17 @@ function setVars(vars: Record<string, string>) {
   for (const [k, v] of Object.entries(vars)) root.style.setProperty(k, v);
 }
 
+function getAccentPalette(accent: string): Record<string, string> {
+  if (accent.startsWith('custom-')) {
+    const hex = accent.slice(7);
+    if (/^#[0-9a-f]{6}$/i.test(hex)) return generatePalette(hex);
+  }
+  return accents[accent] ?? accents.blue;
+}
+
 function applyConfig(config: ThemeConfig) {
   setVars(getEffectiveMode(config.mode) === 'dark' ? darkVars : lightVars);
-  setVars(accents[config.accent] ?? accents.blue);
+  setVars(getAccentPalette(config.accent));
   const el = document.documentElement;
   el.style.setProperty('--density-spacing', densityMap[config.density] ?? '1');
   el.style.setProperty('--font-size-base', fontSizeMap[config.fontSize] ?? '15px');
@@ -201,6 +241,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
   }, []);
 
+  const setCustomColor = useCallback((hex: string) => {
+    const accent = `custom-${hex.toLowerCase()}`;
+    setConfigState(prev => {
+      const next = { ...prev, accent };
+      applyConfig(next);
+      saveConfig(next);
+      return next;
+    });
+  }, []);
+
   const setDensity = useCallback((density: string) => {
     setConfigState(prev => {
       const next = { ...prev, density };
@@ -227,7 +277,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ ...config, setMode, setAccent, setDensity, setFontSize, resetAll }}>
+    <ThemeContext.Provider value={{ ...config, setMode, setAccent, setCustomColor, setDensity, setFontSize, resetAll }}>
       {children}
     </ThemeContext.Provider>
   );

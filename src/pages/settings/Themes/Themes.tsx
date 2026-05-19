@@ -24,7 +24,10 @@ const fontSizes = [
 ];
 
 export const Themes: React.FC = () => {
-  const { mode, setMode, accent, setAccent, density, setDensity, fontSize, setFontSize, resetAll } = useTheme();
+  const { mode, setMode, accent, setAccent, setCustomColor, density, setDensity, fontSize, setFontSize, resetAll } = useTheme();
+
+  const isCustom = accent.startsWith('custom-');
+  const customHex = isCustom ? '#' + accent.slice(7) : '#3B82F6';
 
   return (
     <Card>
@@ -67,9 +70,13 @@ export const Themes: React.FC = () => {
               <button
                 key={s.name}
                 onClick={() => setAccent(s.name)}
-                className={`w-8 h-8 rounded-full ${s.class} ${accent === s.name ? 'ring-2 ring-offset-2 ring-primary-500' : ''}`}
+                className={`w-8 h-8 rounded-full ${s.class} ${accent === s.name && !isCustom ? 'ring-2 ring-offset-2 ring-primary-500' : ''}`}
               />
             ))}
+            <label className={`relative w-8 h-8 rounded-full cursor-pointer ${isCustom ? 'ring-2 ring-offset-2 ring-primary-500' : 'ring-1 ring-gray-300'}`} style={{ backgroundColor: customHex }}>
+              <input type="color" value={customHex} onChange={e => setCustomColor(e.target.value)} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" title="Custom color" />
+              <GoogleIcon icon="colorize" size={14} className="absolute inset-0 m-auto text-white drop-shadow" />
+            </label>
           </div>
         </div>
 
