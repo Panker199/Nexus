@@ -96,7 +96,7 @@ export const DocumentsPage: React.FC = () => {
       <div className="flex justify-between items-center">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
-                          <GoogleIcon icon={docTypeIcon[doc.type] ?? 'attach_file'} size={20} className="text-primary-600" />
+                          <GoogleIcon icon="folder" size={20} className="text-primary-600" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Document Chamber</h1>

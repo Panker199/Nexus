@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Send, Phone, Video, Info, Smile } from 'lucide-react';
+import { Send, Phone, Video, Info, Smile, Paperclip } from 'lucide-react';
 import { Avatar } from '../../components/ui/Avatar';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
@@ -107,6 +107,9 @@ export const ChatPage: React.FC = () => {
               <form onSubmit={handleSendMessage} className="flex gap-3">
                 <Button type="button" variant="ghost" size="sm" className="rounded-full p-2 flex-shrink-0" aria-label="Add emoji">
                   <Smile size={20} />
+                </Button>
+                <Button type="button" variant="ghost" size="sm" className="rounded-full p-2 flex-shrink-0" aria-label="Attach file">
+                  <Paperclip size={20} />
                 </Button>
                 <Input
                   type="text"
