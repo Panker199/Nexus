@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 type ThemeMode = 'light' | 'dark';
 
@@ -10,25 +10,25 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function applyTheme(mode: ThemeMode) {
+  document.documentElement.classList.toggle('dark', mode === 'dark');
+}
+
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mode, setModeState] = useState<ThemeMode>(() => {
     const stored = localStorage.getItem('nexus-theme');
-    if (stored === 'dark' || stored === 'light') return stored;
-    return 'light';
+    const initial: ThemeMode = (stored === 'dark' || stored === 'light') ? stored : 'light';
+    applyTheme(initial);
+    return initial;
   });
 
-  const setMode = useCallback((m: ThemeMode) => {
+  const setMode = (m: ThemeMode) => {
     setModeState(m);
     localStorage.setItem('nexus-theme', m);
-  }, []);
+    applyTheme(m);
+  };
 
-  const toggle = useCallback(() => {
-    setMode(mode === 'light' ? 'dark' : 'light');
-  }, [mode, setMode]);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', mode === 'dark');
-  }, [mode]);
+  const toggle = () => setMode(mode === 'light' ? 'dark' : 'light');
 
   return (
     <ThemeContext.Provider value={{ mode, setMode, toggle }}>
