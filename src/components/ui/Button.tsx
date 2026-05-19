@@ -24,7 +24,9 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded border transition-colors focus:outline-none btn-press';
+  const isLinkVariant = variant === 'link';
+
+  const baseStyles = `inline-flex items-center justify-center font-medium rounded border transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 btn-press ${isLinkVariant ? '' : 'hover:shadow-sm hover:-translate-y-0.5'}`;
 
   const sizeStyles = {
     xs: 'text-xs px-2.5 py-1 gap-1',
@@ -35,15 +37,15 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const variantStyles = {
-    primary: 'bg-primary-600 text-white border-primary-600 hover:bg-primary-700 hover:border-primary-700 disabled:opacity-50',
+    primary: 'bg-primary-600 text-white border-primary-600 hover:bg-primary-700 hover:border-primary-700 hover:shadow-primary-600/20 disabled:opacity-50',
     secondary: 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200 hover:border-gray-300 disabled:opacity-50',
-    accent: 'bg-accent-500 text-white border-accent-500 hover:bg-accent-600 hover:border-accent-600 disabled:opacity-50',
+    accent: 'bg-accent-500 text-white border-accent-500 hover:bg-accent-600 hover:border-accent-600 hover:shadow-accent-500/20 disabled:opacity-50',
     outline: 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50',
     ghost: 'bg-transparent text-gray-600 border-transparent hover:bg-gray-100 disabled:opacity-50',
     link: 'bg-transparent text-primary-600 border-transparent hover:text-primary-800 p-0 disabled:opacity-50',
-    success: 'bg-success-500 text-white border-success-500 hover:bg-success-600 hover:border-success-600 disabled:opacity-50',
-    warning: 'bg-warning-500 text-white border-warning-500 hover:bg-warning-600 hover:border-warning-600 disabled:opacity-50',
-    error: 'bg-error-500 text-white border-error-500 hover:bg-error-600 hover:border-error-600 disabled:opacity-50',
+    success: 'bg-success-500 text-white border-success-500 hover:bg-success-600 hover:border-success-600 hover:shadow-success-500/20 disabled:opacity-50',
+    warning: 'bg-warning-500 text-white border-warning-500 hover:bg-warning-600 hover:border-warning-600 hover:shadow-warning-500/20 disabled:opacity-50',
+    error: 'bg-error-500 text-white border-error-500 hover:bg-error-600 hover:border-error-600 hover:shadow-error-500/20 disabled:opacity-50',
   };
 
   const widthClass = fullWidth ? 'w-full' : '';
@@ -63,10 +65,10 @@ export const Button: React.FC<ButtonProps> = ({
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
         </svg>
       ) : leftIcon ? (
-        <span className="flex-shrink-0">{leftIcon}</span>
+        <span className="flex-shrink-0 btn-icon-start">{leftIcon}</span>
       ) : null}
       {children && <span>{children}</span>}
-      {!isLoading && rightIcon && <span className="flex-shrink-0">{rightIcon}</span>}
+      {!isLoading && rightIcon && <span className="flex-shrink-0 btn-icon-end">{rightIcon}</span>}
     </button>
   );
 };
