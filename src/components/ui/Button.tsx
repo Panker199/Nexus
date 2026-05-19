@@ -24,7 +24,7 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded border transition-colors focus:outline-none';
+  const baseStyles = 'inline-flex items-center justify-center font-medium rounded border transition-colors focus:outline-none btn-press';
 
   const sizeStyles = {
     xs: 'text-xs px-2.5 py-1 gap-1',

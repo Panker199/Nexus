@@ -32,7 +32,7 @@ export const InvestorProfile: React.FC = () => {
   const isCurrentUser = currentUser?.id === investor.id;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 page-entrance">
       <Link to={currentUser?.role === 'entrepreneur' ? '/dashboard/entrepreneur' : '/entrepreneurs'} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700">
         <ArrowLeft size={16} /> Back
       </Link>

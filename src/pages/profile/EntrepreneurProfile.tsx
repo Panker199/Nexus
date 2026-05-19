@@ -49,7 +49,7 @@ export const EntrepreneurProfile: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 page-entrance">
       <Link to={isInvestor ? '/dashboard/investor' : '/investors'} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700">
         <ArrowLeft size={16} />
         Back

@@ -13,7 +13,7 @@ export const Card: React.FC<CardProps> = ({
   onClick,
   hoverable = false,
 }) => {
-  const hoverableClass = hoverable ? 'cursor-pointer hover:border-gray-300 hover:bg-gray-50' : '';
+  const hoverableClass = hoverable ? 'card-hover cursor-pointer' : '';
 
   return (
     <div

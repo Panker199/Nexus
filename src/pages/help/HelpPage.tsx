@@ -16,7 +16,7 @@ export const HelpPage: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 page-entrance">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
           <HelpCircle size={20} className="text-primary-600" />

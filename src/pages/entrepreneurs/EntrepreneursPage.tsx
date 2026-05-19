@@ -47,7 +47,7 @@ export const EntrepreneursPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 page-entrance">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
           <GoogleIcon icon="business" size={20} className="text-primary-600" />
@@ -145,8 +145,8 @@ export const EntrepreneursPage: React.FC = () => {
           </div>
 
           {filteredEntrepreneurs.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredEntrepreneurs.map(entrepreneur => (
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 stagger-list">
+            {filteredEntrepreneurs.map(entrepreneur => (
                 <EntrepreneurCard key={entrepreneur.id} entrepreneur={entrepreneur} />
               ))}
             </div>

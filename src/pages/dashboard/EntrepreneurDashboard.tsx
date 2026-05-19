@@ -57,7 +57,7 @@ export const EntrepreneurDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 page-entrance">
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
@@ -104,7 +104,7 @@ export const EntrepreneurDashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-list">
         {stats.map((stat, i) => {
           const Icon = stat.icon;
           const s = statStyles[stat.color];
@@ -172,7 +172,7 @@ export const EntrepreneurDashboard: React.FC = () => {
                 </div>
                 <Link to="/deals" className="text-xs text-primary-600 hover:text-primary-700 font-medium">View all</Link>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 stagger-list">
                 {deals.slice(0, 2).map(deal => (
                   <Card key={deal.id}>
                     <CardBody className="p-4">

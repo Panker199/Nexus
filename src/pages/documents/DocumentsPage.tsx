@@ -13,7 +13,7 @@ const documents = [
 
 export const DocumentsPage: React.FC = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 page-entrance">
       <div className="flex justify-between items-center">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
@@ -86,7 +86,7 @@ export const DocumentsPage: React.FC = () => {
               </div>
             </CardHeader>
             <CardBody>
-              <div className="space-y-1">
+              <div className="space-y-1 stagger-list">
                 {documents.map(doc => (
                   <div key={doc.id} className="flex items-center p-3 hover:bg-gray-50 rounded group">
                     <div className="p-2.5 bg-primary-50 rounded mr-4">

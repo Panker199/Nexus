@@ -87,6 +87,7 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
   }
 
   body {
@@ -94,6 +95,7 @@
     font-size: var(--font-size-base, 15px);
     line-height: 1.6;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'liga';
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1 { @apply text-2xl font-bold text-gray-900 tracking-tight; }
@@ -168,4 +170,37 @@
   .text-caption { @apply text-xs text-gray-500; }
   .stat-value { @apply text-2xl font-bold text-gray-900 tracking-tight; }
   .stat-label { @apply text-xs font-medium text-gray-500 uppercase tracking-wide; }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card;
+  }
+
+  .btn-press {
+    @apply active:scale-[0.97] transition-transform duration-100;
+  }
+
+  .page-entrance {
+    animation: slideUp 0.35s ease-out both;
+  }
+
+  .stagger-list > * {
+    animation: slideUp 0.35s ease-out both;
+  }
+  .stagger-list > *:nth-child(1) { animation-delay: 0.02s; }
+  .stagger-list > *:nth-child(2) { animation-delay: 0.06s; }
+  .stagger-list > *:nth-child(3) { animation-delay: 0.1s; }
+  .stagger-list > *:nth-child(4) { animation-delay: 0.14s; }
+  .stagger-list > *:nth-child(5) { animation-delay: 0.18s; }
+  .stagger-list > *:nth-child(6) { animation-delay: 0.22s; }
+  .stagger-list > *:nth-child(7) { animation-delay: 0.26s; }
+  .stagger-list > *:nth-child(8) { animation-delay: 0.3s; }
+  .stagger-list > *:nth-child(9) { animation-delay: 0.34s; }
+  .stagger-list > *:nth-child(10) { animation-delay: 0.38s; }
+
+  .icon-hover {
+    @apply transition-transform duration-200;
+  }
+  button:hover .icon-hover, a:hover .icon-hover {
+    transform: scale(1.15) rotate(-6deg);
+  }
 }

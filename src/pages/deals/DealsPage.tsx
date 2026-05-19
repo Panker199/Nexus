@@ -63,7 +63,7 @@ export const DealsPage: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 page-entrance">
       <div className="flex justify-between items-center">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
@@ -76,7 +76,7 @@ export const DealsPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-list">
         {stats.map((stat, i) => {
           const Icon = stat.icon;
           const s = statStyles[stat.color];
@@ -150,7 +150,7 @@ export const DealsPage: React.FC = () => {
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-gray-50 stagger-list">
                   {filteredDeals.map(deal => (
                     <tr key={deal.id} className="hover:bg-gray-50/50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">

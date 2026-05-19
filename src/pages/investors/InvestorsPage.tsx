@@ -38,7 +38,7 @@ export const InvestorsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 page-entrance">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
           <GoogleIcon icon="attach_money" size={22} className="text-primary-600" />
@@ -124,8 +124,8 @@ export const InvestorsPage: React.FC = () => {
           </div>
 
           {filteredInvestors.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredInvestors.map(investor => (
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 stagger-list">
+            {filteredInvestors.map(investor => (
                 <InvestorCard key={investor.id} investor={investor} />
               ))}
             </div>

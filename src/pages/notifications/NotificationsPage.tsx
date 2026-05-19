@@ -50,7 +50,7 @@ export const NotificationsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 page-entrance">
       <div className="flex justify-between items-center">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
@@ -72,7 +72,7 @@ export const NotificationsPage: React.FC = () => {
       </div>
 
       {notifications.length > 0 ? (
-        <div className="space-y-3">
+        <div className="space-y-3 stagger-list">
           {notifications.map(notification => {
             const fromUser = findUserById(notification.fromUserId);
             if (!fromUser) return null;
