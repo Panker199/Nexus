@@ -79,16 +79,30 @@ export const InvestorsPage: React.FC = () => {
               <div>
                 <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><GoogleIcon icon="favorite" size={14} className="inline mr-1.5 text-primary-600 align-text-bottom" />Interests</h3>
                 <div className="flex flex-wrap gap-1.5">
-                  {allInterests.map(interest => (
-                    <Badge
-                      key={interest}
-                      variant={selectedInterests.includes(interest) ? 'primary' : 'gray'}
-                      className="cursor-pointer select-none"
-                      onClick={() => toggleInterest(interest)}
-                    >
-                      {interest}
-                    </Badge>
-                  ))}
+                  {allInterests.map(interest => {
+                    const iconMap: Record<string, string> = {
+                      FinTech: 'account_balance',
+                      SaaS: 'cloud',
+                      'AI/ML': 'smart_toy',
+                      CleanTech: 'energy_savings_leaf',
+                      AgTech: 'agriculture',
+                      Sustainability: 'eco',
+                      HealthTech: 'biotech',
+                      BioTech: 'science',
+                      'Medical Devices': 'medical_services',
+                    };
+                    return (
+                      <Badge
+                        key={interest}
+                        variant={selectedInterests.includes(interest) ? 'primary' : 'gray'}
+                        className="cursor-pointer select-none"
+                        onClick={() => toggleInterest(interest)}
+                      >
+                        <GoogleIcon icon={iconMap[interest] || 'favorite'} size={12} className="mr-0.5 align-text-bottom" />
+                        {interest}
+                      </Badge>
+                    );
+                  })}
                 </div>
               </div>
 
