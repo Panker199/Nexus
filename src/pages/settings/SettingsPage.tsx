@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { GoogleIcon } from '../../components/ui/GoogleIcon';
+import { useTheme } from '../../context/ThemeContext';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
@@ -318,7 +319,7 @@ const LanguageSettings: React.FC = () => {
 
 /* ─── Appearance ────────────────────────────────────────── */
 const AppearanceSettings: React.FC = () => {
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
+  const { mode, setMode } = useTheme();
   const [theme, setTheme] = useState('blue');
   const [density, setDensity] = useState('comfortable');
   const [fontSize, setFontSize] = useState('normal');
