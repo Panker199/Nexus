@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, MapPin, Building2, DollarSign, Lightbulb } from 'lucide-react';
+import { GoogleIcon } from '../../components/ui/GoogleIcon';
 import { Input } from '../../components/ui/Input';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
@@ -50,7 +50,7 @@ export const EntrepreneursPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
-          <Building2 size={20} className="text-primary-600" />
+          <GoogleIcon icon="business" size={20} className="text-primary-600" />
         </div>
         <div>
           <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Find Startups</h1>
@@ -63,30 +63,39 @@ export const EntrepreneursPage: React.FC = () => {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <div className="flex items-center gap-2"><Filter size={16} className="text-primary-600" /><h2 className="text-sm font-semibold text-gray-900">Filters</h2></div>
+              <div className="flex items-center gap-2"><GoogleIcon icon="filter_list" size={18} className="text-primary-600" /><h2 className="text-sm font-semibold text-gray-900">Filters</h2></div>
             </CardHeader>
             <CardBody className="space-y-5">
               <div>
-                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><Lightbulb size={12} className="inline mr-1.5 text-primary-600" />Industry</h3>
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><GoogleIcon icon="category" size={14} className="inline mr-1.5 text-primary-600 align-text-bottom" />Industry</h3>
                 <div className="space-y-1">
-                  {allIndustries.map(industry => (
-                    <button
-                      key={industry}
-                      onClick={() => toggleIndustry(industry)}
-                      className={`block w-full text-left px-3 py-2 rounded text-sm ${
-                        selectedIndustries.includes(industry)
-                          ? 'bg-primary-50 text-primary-700 font-medium'
-                          : 'text-gray-600 hover:bg-gray-50'
-                      }`}
-                    >
-                      <Building2 size={14} className="inline mr-1.5 text-gray-400" />{industry}
-                    </button>
-                  ))}
+                  {allIndustries.map(industry => {
+                    const googleIcon: Record<string, string> = {
+                      FinTech: 'account_balance',
+                      CleanTech: 'energy_savings_leaf',
+                      HealthTech: 'biotech',
+                      AgTech: 'agriculture',
+                    };
+                    return (
+                      <button
+                        key={industry}
+                        onClick={() => toggleIndustry(industry)}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm ${
+                          selectedIndustries.includes(industry)
+                            ? 'bg-primary-50 text-primary-700 font-medium'
+                            : 'text-gray-600 hover:bg-gray-50'
+                        }`}
+                      >
+                        <GoogleIcon icon={googleIcon[industry] || 'business'} size={16} className="inline mr-1.5 text-gray-400 align-text-bottom" />
+                        {industry}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               <div>
-                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><DollarSign size={12} className="inline mr-1.5 text-primary-600" />Funding Range</h3>
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><GoogleIcon icon="payments" size={14} className="inline mr-1.5 text-primary-600 align-text-bottom" />Funding Range</h3>
                 <div className="space-y-1">
                   {fundingRanges.map(range => (
                     <button
@@ -98,18 +107,18 @@ export const EntrepreneursPage: React.FC = () => {
                           : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
-                      <DollarSign size={14} className="inline mr-1.5 text-gray-400" />{range}
+                      <GoogleIcon icon="payments" size={16} className="inline mr-1.5 text-gray-400 align-text-bottom" />{range}
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><MapPin size={12} className="inline mr-1.5 text-primary-600" />Location</h3>
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><GoogleIcon icon="location_on" size={14} className="inline mr-1.5 text-primary-600 align-text-bottom" />Location</h3>
                 <div className="space-y-1">
                   {['San Francisco, CA', 'New York, NY', 'Boston, MA'].map((loc, i) => (
                     <button key={i} className="flex items-center w-full text-left px-3 py-2 rounded text-sm text-gray-600 hover:bg-gray-50">
-                      <MapPin size={14} className="mr-2 text-gray-400" />
+                      <GoogleIcon icon="location_on" size={16} className="mr-2 text-gray-400" />
                       {loc}
                     </button>
                   ))}
@@ -126,11 +135,11 @@ export const EntrepreneursPage: React.FC = () => {
               placeholder="Search startups by name, industry..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              startAdornment={<Search size={18} />}
+              startAdornment={<GoogleIcon icon="search" size={18} />}
               fullWidth
             />
             <div className="flex items-center gap-2 flex-shrink-0">
-              <Filter size={16} className="text-gray-400" />
+              <GoogleIcon icon="filter_list" size={18} className="text-gray-400" />
               <span className="text-sm text-gray-500">{filteredEntrepreneurs.length} results</span>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, MessageCircle, UserPlus, DollarSign, CheckCheck, Send, XCircle, Briefcase } from 'lucide-react';
+import { GoogleIcon } from '../../components/ui/GoogleIcon';
 import { Card, CardBody } from '../../components/ui/Card';
 import { Avatar } from '../../components/ui/Avatar';
 import { Badge } from '../../components/ui/Badge';
@@ -26,13 +26,13 @@ export const NotificationsPage: React.FC = () => {
 
   const getIcon = (type: string) => {
     switch (type) {
-      case 'message': return <MessageCircle size={16} className="text-primary-600" />;
+      case 'message': return <GoogleIcon icon="chat" size={16} className="text-primary-600" />;
       case 'connection':
-      case 'request_accepted': return <UserPlus size={16} className="text-secondary-600" />;
-      case 'request_sent': return <Send size={16} className="text-accent-600" />;
-      case 'request_declined': return <XCircle size={16} className="text-error-600" />;
-      case 'deal': return <Briefcase size={16} className="text-primary-600" />;
-      default: return <Bell size={16} className="text-gray-600" />;
+      case 'request_accepted': return <GoogleIcon icon="person_add" size={16} className="text-secondary-600" />;
+      case 'request_sent': return <GoogleIcon icon="send" size={16} className="text-accent-600" />;
+      case 'request_declined': return <GoogleIcon icon="cancel" size={16} className="text-error-600" />;
+      case 'deal': return <GoogleIcon icon="business" size={16} className="text-primary-600" />;
+      default: return <GoogleIcon icon="notifications" size={16} className="text-gray-600" />;
     }
   };
 
@@ -54,7 +54,7 @@ export const NotificationsPage: React.FC = () => {
       <div className="flex justify-between items-center">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
-            <Bell size={20} className="text-primary-600" />
+            <GoogleIcon icon="notifications" size={22} className="text-primary-600" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Notifications</h1>
@@ -64,7 +64,7 @@ export const NotificationsPage: React.FC = () => {
         {unreadCount > 0 && (
           <div className="flex items-center gap-3">
             <span className="text-xs text-gray-500">{unreadCount} unread</span>
-            <Button variant="outline" size="sm" leftIcon={<CheckCheck size={16} />} onClick={handleMarkAllRead}>
+            <Button variant="outline" size="sm" leftIcon={<GoogleIcon icon="done_all" size={18} />} onClick={handleMarkAllRead}>
               Mark all read
             </Button>
           </div>
@@ -106,7 +106,7 @@ export const NotificationsPage: React.FC = () => {
         <Card>
           <CardBody className="text-center py-12">
             <div className="mx-auto w-14 h-14 rounded bg-gray-100 flex items-center justify-center mb-4">
-              <Bell size={28} className="text-gray-400" />
+              <GoogleIcon icon="notifications_none" size={32} className="text-gray-400" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900">No notifications yet</h3>
             <p className="text-sm text-gray-500 mt-1">We'll notify you when something happens</p>

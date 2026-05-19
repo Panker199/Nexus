@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Lock, Bell, Globe, Palette, CreditCard, Smartphone, Monitor, Moon, Sun, Key, Shield, Mail, Clock, Paintbrush, FileText, Download, LayoutGrid, Type } from 'lucide-react';
+import { GoogleIcon } from '../../components/ui/GoogleIcon';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
@@ -9,13 +9,13 @@ import { useAuth } from '../../context/AuthContext';
 
 type SettingTab = 'Profile' | 'Security' | 'Notifications' | 'Language' | 'Appearance' | 'Billing';
 
-const tabs: { icon: React.FC<{ size?: number }>; label: SettingTab }[] = [
-  { icon: User, label: 'Profile' },
-  { icon: Lock, label: 'Security' },
-  { icon: Bell, label: 'Notifications' },
-  { icon: Globe, label: 'Language' },
-  { icon: Palette, label: 'Appearance' },
-  { icon: CreditCard, label: 'Billing' },
+const tabs: { icon: string; label: SettingTab }[] = [
+  { icon: 'person', label: 'Profile' },
+  { icon: 'lock', label: 'Security' },
+  { icon: 'notifications', label: 'Notifications' },
+  { icon: 'language', label: 'Language' },
+  { icon: 'palette', label: 'Appearance' },
+  { icon: 'credit_card', label: 'Billing' },
 ];
 
 const languages = ['English', 'Spanish', 'French', 'German', 'Japanese', 'Chinese'];
@@ -51,7 +51,6 @@ export const SettingsPage: React.FC = () => {
           <CardBody className="p-2">
             <nav className="space-y-0.5">
               {tabs.map((tab) => {
-                const Icon = tab.icon;
                 const isActive = activeTab === tab.label;
                 return (
                   <button
@@ -61,7 +60,7 @@ export const SettingsPage: React.FC = () => {
                       isActive ? 'bg-primary-50 text-primary-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     }`}
                   >
-                    <Icon size={18} />
+                    <GoogleIcon icon={tab.icon} size={18} />
                     {tab.label}
                   </button>
                 );
@@ -81,7 +80,7 @@ export const SettingsPage: React.FC = () => {
 /* ─── Profile ─────────────────────────────────────────── */
 const ProfileSettings: React.FC<{ user: any }> = ({ user }) => (
   <Card>
-    <CardHeader><div className="flex items-center gap-2"><User size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Profile</h2></div></CardHeader>
+    <CardHeader><div className="flex items-center gap-2"><GoogleIcon icon="person" size={20} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Profile</h2></div></CardHeader>
     <CardBody className="space-y-6">
       <div className="flex items-center gap-6">
         <Avatar src={user.avatarUrl} alt={user.name} size="xl" ring />
@@ -114,11 +113,11 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => (
 /* ─── Security ─────────────────────────────────────────── */
 const SecuritySettings: React.FC = () => (
   <Card>
-    <CardHeader><div className="flex items-center gap-2"><Lock size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Security</h2></div></CardHeader>
+    <CardHeader><div className="flex items-center gap-2"><GoogleIcon icon="lock" size={20} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Security</h2></div></CardHeader>
     <CardBody className="space-y-6">
       <div className="flex items-center justify-between p-4 rounded bg-gray-50 border border-gray-200">
         <div>
-          <div className="flex items-center gap-2"><Shield size={16} className="text-primary-600" /><h3 className="text-sm font-medium text-gray-900">Two-Factor Auth</h3></div>
+          <div className="flex items-center gap-2"><GoogleIcon icon="shield" size={18} className="text-primary-600" /><h3 className="text-sm font-medium text-gray-900">Two-Factor Auth</h3></div>
           <p className="text-xs text-gray-500 mt-0.5">Add an extra layer of security</p>
         </div>
         <div className="flex items-center gap-3">
@@ -128,7 +127,7 @@ const SecuritySettings: React.FC = () => (
       </div>
 
       <div className="pt-4 border-t border-gray-200">
-        <div className="flex items-center gap-2 mb-4"><Key size={16} className="text-primary-600" /><h3 className="text-sm font-medium text-gray-900">Change Password</h3></div>
+        <div className="flex items-center gap-2 mb-4"><GoogleIcon icon="key" size={18} className="text-primary-600" /><h3 className="text-sm font-medium text-gray-900">Change Password</h3></div>
         <div className="space-y-4 max-w-md">
           <Input label="Current Password" type="password" />
           <Input label="New Password" type="password" />
@@ -138,7 +137,7 @@ const SecuritySettings: React.FC = () => (
       </div>
 
       <div className="pt-4 border-t border-gray-200">
-        <div className="flex items-center gap-2 mb-4"><Monitor size={16} className="text-primary-600" /><h3 className="text-sm font-medium text-gray-900">Active Sessions</h3></div>
+        <div className="flex items-center gap-2 mb-4"><GoogleIcon icon="monitor" size={18} className="text-primary-600" /><h3 className="text-sm font-medium text-gray-900">Active Sessions</h3></div>
         <div className="space-y-3">
           {[
             { device: 'Chrome on Windows', location: 'San Francisco, CA', time: 'Active now', current: true },
@@ -146,7 +145,7 @@ const SecuritySettings: React.FC = () => (
           ].map((s, i) => (
             <div key={i} className="flex items-center justify-between p-3 rounded border border-gray-200">
               <div className="flex items-center gap-3">
-                <Smartphone size={18} className="text-gray-400" />
+                <GoogleIcon icon="smartphone" size={18} className="text-gray-400" />
                 <div>
                   <p className="text-sm font-medium text-gray-900">{s.device} {s.current && <Badge size="sm" variant="primary">Current</Badge>}</p>
                   <p className="text-xs text-gray-500">{s.location} &middot; {s.time}</p>
@@ -170,6 +169,8 @@ const NotificationSettings: React.FC = () => {
     marketing: false,
     weeklyDigest: true,
     pushEnabled: true,
+    sound: true,
+    badgeCount: true,
   });
 
   const toggle = (key: keyof typeof toggles) => setToggles(prev => ({ ...prev, [key]: !prev[key] }));
@@ -180,7 +181,7 @@ const NotificationSettings: React.FC = () => {
       onClick={onChange}
       className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${checked ? 'bg-primary-600' : 'bg-gray-200'}`}
     >
-      <span className={`inline-block h-3.5 w-3.5 rounded-full bg-white transition-transform ${checked ? 'translate-x-4.5' : 'translate-x-1'}`} />
+      <span className={`inline-block h-3.5 w-3.5 rounded-full bg-white transition-all ${checked ? 'translate-x-[1.125rem]' : 'translate-x-0.5'}`} />
     </button>
   );
 
@@ -195,7 +196,7 @@ const NotificationSettings: React.FC = () => {
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader><div className="flex items-center gap-2"><Mail size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Email Notifications</h2></div></CardHeader>
+        <CardHeader><div className="flex items-center gap-2"><GoogleIcon icon="mail" size={20} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Email Notifications</h2></div></CardHeader>
         <CardBody className="space-y-4">
           {notifyItems.map(item => (
             <div key={item.key} className="flex items-center justify-between">
@@ -212,25 +213,31 @@ const NotificationSettings: React.FC = () => {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2"><Bell size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Push Notifications</h2></div>
+            <div className="flex items-center gap-2"><GoogleIcon icon="notifications" size={20} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Push Notifications</h2></div>
             <Switch checked={toggles.pushEnabled} onChange={() => toggle('pushEnabled')} />
           </div>
         </CardHeader>
         <CardBody>
           <div className={`space-y-4 ${!toggles.pushEnabled ? 'opacity-50 pointer-events-none' : ''}`}>
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-900">Sound</p>
-                <p className="text-xs text-gray-500">Play a sound when notifications arrive</p>
+              <div className="flex items-center gap-2">
+                <GoogleIcon icon="volume_up" size={18} className="text-gray-400" />
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Sound</p>
+                  <p className="text-xs text-gray-500">Play a sound when notifications arrive</p>
+                </div>
               </div>
-              <Switch checked={true} onChange={() => {}} />
+              <Switch checked={toggles.sound} onChange={() => toggle('sound')} />
             </div>
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-900">Badge Count</p>
-                <p className="text-xs text-gray-500">Show unread count on app icon</p>
+              <div className="flex items-center gap-2">
+                <GoogleIcon icon="badge" size={18} className="text-gray-400" />
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Badge Count</p>
+                  <p className="text-xs text-gray-500">Show unread count on app icon</p>
+                </div>
               </div>
-              <Switch checked={true} onChange={() => {}} />
+              <Switch checked={toggles.badgeCount} onChange={() => toggle('badgeCount')} />
             </div>
           </div>
         </CardBody>
@@ -247,7 +254,7 @@ const LanguageSettings: React.FC = () => {
 
   return (
     <Card>
-      <CardHeader><div className="flex items-center gap-2"><Globe size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Language & Region</h2></div></CardHeader>
+      <CardHeader><div className="flex items-center gap-2"><GoogleIcon icon="language" size={20} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Language & Region</h2></div></CardHeader>
       <CardBody className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
@@ -326,39 +333,35 @@ const AppearanceSettings: React.FC = () => {
 
   return (
     <Card>
-      <CardHeader><div className="flex items-center gap-2"><Palette size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Appearance</h2></div></CardHeader>
+      <CardHeader><div className="flex items-center gap-2"><GoogleIcon icon="palette" size={20} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Appearance</h2></div></CardHeader>
       <CardBody className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2"><Sun size={14} className="inline mr-1.5 text-primary-600" />Theme Mode</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2"><GoogleIcon icon="light_mode" size={16} className="inline mr-1.5 text-primary-600 align-text-bottom" />Theme Mode</label>
           <div className="flex gap-3">
-            {[
-              { id: 'light', icon: Sun, label: 'Light' },
-              { id: 'dark', icon: Moon, label: 'Dark' },
-            ].map(opt => {
-              const Icon = opt.icon;
-              const selected = mode === opt.id;
-              return (
-                <button
-                  key={opt.id}
-                  onClick={() => setMode(opt.id as 'light' | 'dark')}
-                  className={`flex items-center gap-2 px-4 py-3 rounded border text-sm ${
-                    selected ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-gray-200 text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <Icon size={18} />
-                  {opt.label}
-                </button>
-              );
-            })}
+            <button
+              onClick={() => setMode('light')}
+              className={`flex items-center gap-2 px-4 py-3 rounded border text-sm ${
+                mode === 'light' ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-gray-200 text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <GoogleIcon icon="light_mode" size={18} />Light
+            </button>
+            <button
+              onClick={() => setMode('dark')}
+              className={`flex items-center gap-2 px-4 py-3 rounded border text-sm ${
+                mode === 'dark' ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-gray-200 text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <GoogleIcon icon="dark_mode" size={18} />Dark
+            </button>
             <button className="flex items-center gap-2 px-4 py-3 rounded border border-gray-200 text-gray-400 text-sm cursor-not-allowed" disabled>
-              <Monitor size={18} />
-              System
+              <GoogleIcon icon="monitor" size={18} />System
             </button>
           </div>
         </div>
 
         <div className="pt-4 border-t border-gray-200">
-          <label className="block text-sm font-medium text-gray-700 mb-2"><Paintbrush size={14} className="inline mr-1 text-primary-600" />Accent Color</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2"><GoogleIcon icon="brush" size={16} className="inline mr-1.5 text-primary-600 align-text-bottom" />Accent Color</label>
           <div className="flex gap-3">
             {themeColors.map(c => (
               <button
@@ -371,7 +374,7 @@ const AppearanceSettings: React.FC = () => {
         </div>
 
         <div className="pt-4 border-t border-gray-200">
-          <label className="block text-sm font-medium text-gray-700 mb-2"><LayoutGrid size={14} className="inline mr-1.5 text-primary-600" />Density</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2"><GoogleIcon icon="density_medium" size={16} className="inline mr-1.5 text-primary-600 align-text-bottom" />Density</label>
           <div className="flex gap-2">
             {[
               { id: 'compact', label: 'Compact' },
@@ -392,7 +395,7 @@ const AppearanceSettings: React.FC = () => {
         </div>
 
         <div className="pt-4 border-t border-gray-200">
-          <label className="block text-sm font-medium text-gray-700 mb-2"><Type size={14} className="inline mr-1.5 text-primary-600" />Font Size</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2"><GoogleIcon icon="text_fields" size={16} className="inline mr-1.5 text-primary-600 align-text-bottom" />Font Size</label>
           <div className="flex gap-2">
             {[
               { id: 'small', label: 'Small' },
@@ -427,7 +430,7 @@ const BillingSettings: React.FC = () => {
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader><div className="flex items-center gap-2"><CreditCard size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Current Plan</h2></div></CardHeader>
+        <CardHeader><div className="flex items-center gap-2"><GoogleIcon icon="credit_card" size={20} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Current Plan</h2></div></CardHeader>
         <CardBody>
           <div className="flex items-center justify-between">
             <div>
@@ -447,7 +450,7 @@ const BillingSettings: React.FC = () => {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2"><CreditCard size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Payment Method</h2></div>
+            <div className="flex items-center gap-2"><GoogleIcon icon="credit_card" size={20} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Payment Method</h2></div>
             <Button variant="outline" size="sm">Add Card</Button>
           </div>
         </CardHeader>
@@ -466,7 +469,7 @@ const BillingSettings: React.FC = () => {
       </Card>
 
       <Card>
-        <CardHeader><div className="flex items-center gap-2"><FileText size={18} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Billing History</h2></div></CardHeader>
+        <CardHeader><div className="flex items-center gap-2"><GoogleIcon icon="description" size={20} className="text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">Billing History</h2></div></CardHeader>
         <CardBody>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

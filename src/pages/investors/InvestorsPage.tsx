@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, MapPin, CircleDollarSign, TrendingUp, Heart } from 'lucide-react';
+import { GoogleIcon } from '../../components/ui/GoogleIcon';
 import { Input } from '../../components/ui/Input';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
@@ -41,7 +41,7 @@ export const InvestorsPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 rounded bg-primary-50 flex items-center justify-center flex-shrink-0">
-          <CircleDollarSign size={20} className="text-primary-600" />
+          <GoogleIcon icon="attach_money" size={22} className="text-primary-600" />
         </div>
         <div>
           <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Find Investors</h1>
@@ -54,11 +54,11 @@ export const InvestorsPage: React.FC = () => {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-                <div className="flex items-center gap-2"><Filter size={16} className="text-primary-600" /><h2 className="text-sm font-semibold text-gray-900">Filters</h2></div>
+                <div className="flex items-center gap-2"><GoogleIcon icon="filter_list" size={18} className="text-primary-600" /><h2 className="text-sm font-semibold text-gray-900">Filters</h2></div>
             </CardHeader>
             <CardBody className="space-y-5">
               <div>
-                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><TrendingUp size={12} className="inline mr-1.5 text-primary-600" />Stage</h3>
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><GoogleIcon icon="trending_up" size={14} className="inline mr-1.5 text-primary-600 align-text-bottom" />Stage</h3>
                 <div className="space-y-1">
                   {allStages.map(stage => (
                     <button
@@ -70,14 +70,14 @@ export const InvestorsPage: React.FC = () => {
                           : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
-                      <TrendingUp size={14} className="inline mr-1.5 text-gray-400" />{stage}
+                      <GoogleIcon icon="trending_up" size={16} className="inline mr-1.5 text-gray-400 align-text-bottom" />{stage}
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><Heart size={12} className="inline mr-1.5 text-primary-600" />Interests</h3>
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><GoogleIcon icon="favorite" size={14} className="inline mr-1.5 text-primary-600 align-text-bottom" />Interests</h3>
                 <div className="flex flex-wrap gap-1.5">
                   {allInterests.map(interest => (
                     <Badge
@@ -93,11 +93,11 @@ export const InvestorsPage: React.FC = () => {
               </div>
 
               <div>
-                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><MapPin size={12} className="inline mr-1.5 text-primary-600" />Location</h3>
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2"><GoogleIcon icon="location_on" size={14} className="inline mr-1.5 text-primary-600 align-text-bottom" />Location</h3>
                 <div className="space-y-1">
                   {['San Francisco, CA', 'New York, NY', 'Boston, MA'].map((loc, i) => (
                     <button key={i} className="flex items-center w-full text-left px-3 py-2 rounded text-sm text-gray-600 hover:bg-gray-50">
-                      <MapPin size={14} className="mr-2 text-gray-400" />
+                      <GoogleIcon icon="location_on" size={16} className="mr-2 text-gray-400" />
                       {loc}
                     </button>
                   ))}
@@ -114,11 +114,11 @@ export const InvestorsPage: React.FC = () => {
               placeholder="Search investors by name, interests..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              startAdornment={<Search size={18} />}
+              startAdornment={<GoogleIcon icon="search" size={18} />}
               fullWidth
             />
             <div className="flex items-center gap-2 flex-shrink-0">
-              <Filter size={16} className="text-gray-400" />
+              <GoogleIcon icon="filter_list" size={18} className="text-gray-400" />
               <span className="text-sm text-gray-500">{filteredInvestors.length} results</span>
             </div>
           </div>
