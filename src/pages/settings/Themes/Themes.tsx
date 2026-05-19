@@ -49,7 +49,12 @@ export const Themes: React.FC = () => {
             >
               <GoogleIcon icon="dark_mode" size={18} />Dark
             </button>
-            <button className="flex items-center gap-2 px-4 py-3 rounded border border-gray-200 text-gray-400 text-sm cursor-not-allowed" disabled>
+            <button
+              onClick={() => setMode('system')}
+              className={`flex items-center gap-2 px-4 py-3 rounded border text-sm ${
+                mode === 'system' ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-gray-200 text-gray-700 hover:border-gray-300'
+              }`}
+            >
               <GoogleIcon icon="monitor" size={18} />System
             </button>
           </div>

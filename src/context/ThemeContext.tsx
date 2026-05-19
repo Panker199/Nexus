@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
-type ThemeMode = 'light' | 'dark';
+type ThemeMode = 'light' | 'dark' | 'system';
 
 interface ThemeConfig {
   mode: ThemeMode;
@@ -121,13 +121,20 @@ const fontSizeMap: Record<string, string> = { small: '13px', normal: '15px', lar
 
 /* ─── Apply helpers ──────────────────────────────── */
 
+function getEffectiveMode(mode: ThemeMode): 'light' | 'dark' {
+  if (mode === 'system') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  return mode;
+}
+
 function setVars(vars: Record<string, string>) {
   const root = document.documentElement;
   for (const [k, v] of Object.entries(vars)) root.style.setProperty(k, v);
 }
 
 function applyConfig(config: ThemeConfig) {
-  setVars(config.mode === 'dark' ? darkVars : lightVars);
+  setVars(getEffectiveMode(config.mode) === 'dark' ? darkVars : lightVars);
   setVars(accents[config.accent] ?? accents.blue);
   const el = document.documentElement;
   el.style.setProperty('--density-spacing', densityMap[config.density] ?? '1');
@@ -136,8 +143,10 @@ function applyConfig(config: ThemeConfig) {
 
 function loadThemeConfig(): ThemeConfig {
   const get = (k: string, fb: string) => { try { return localStorage.getItem(k) ?? fb; } catch { return fb; } };
+  const stored = get('nexus-theme', 'light');
+  const mode: ThemeMode = stored === 'dark' || stored === 'system' ? stored : 'light';
   return {
-    mode: (get('nexus-theme', 'light') === 'dark' ? 'dark' : 'light') as ThemeMode,
+    mode,
     accent: get('nexus-accent', 'blue'),
     density: get('nexus-density', 'comfortable'),
     fontSize: get('nexus-font-size', 'normal'),
@@ -159,6 +168,20 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     applyConfig(c);
     return c;
   });
+
+  const configRef = React.useRef(config);
+  configRef.current = config;
+
+  React.useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = () => {
+      if (configRef.current.mode === 'system') {
+        applyConfig(configRef.current);
+      }
+    };
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, [config.mode]);
 
   const setMode = useCallback((mode: ThemeMode) => {
     setConfigState(prev => {
