@@ -3,14 +3,6 @@ import { useTheme } from '../../../context/ThemeContext';
 import { Card, CardHeader, CardBody } from '../../../components/ui/Card';
 import { Button } from '../../../components/ui/Button';
 
-const swatches = [
-  { name: 'blue', class: 'bg-blue-500' },
-  { name: 'indigo', class: 'bg-indigo-500' },
-  { name: 'green', class: 'bg-green-500' },
-  { name: 'purple', class: 'bg-purple-500' },
-  { name: 'orange', class: 'bg-orange-500' },
-];
-
 const densities = [
   { id: 'compact', label: 'Compact' },
   { id: 'comfortable', label: 'Comfortable' },
@@ -24,7 +16,7 @@ const fontSizes = [
 ];
 
 export const Themes: React.FC = () => {
-  const { mode, setMode, accent, setAccent, setCustomColor, density, setDensity, fontSize, setFontSize, resetAll } = useTheme();
+  const { mode, setMode, accent, setCustomColor, density, setDensity, fontSize, setFontSize, resetAll } = useTheme();
 
   const isCustom = accent.startsWith('custom-');
   const customHex = isCustom ? '#' + accent.slice(7) : '#3B82F6';
@@ -65,19 +57,11 @@ export const Themes: React.FC = () => {
 
         <div className="pt-4 border-t border-gray-200">
           <label className="block text-sm font-medium text-gray-700 mb-2"><GoogleIcon icon="brush" size={16} className="inline mr-1.5 text-primary-600 align-text-bottom" />Accent Color</label>
-          <div className="flex gap-3">
-            {swatches.map(s => (
-              <button
-                key={s.name}
-                onClick={() => setAccent(s.name)}
-                className={`w-8 h-8 rounded-full ${s.class} ${accent === s.name && !isCustom ? 'ring-2 ring-offset-2 ring-primary-500' : ''}`}
-              />
-            ))}
-            <label className={`relative w-8 h-8 rounded-full cursor-pointer ${isCustom ? 'ring-2 ring-offset-2 ring-primary-500' : 'ring-1 ring-gray-300'}`} style={{ backgroundColor: customHex }}>
-              <input type="color" value={customHex} onChange={e => setCustomColor(e.target.value)} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" title="Custom color" />
-              <GoogleIcon icon="colorize" size={14} className="absolute inset-0 m-auto text-white drop-shadow" />
-            </label>
-          </div>
+          <label className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded border text-sm cursor-pointer ${isCustom ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-gray-200 text-gray-700 hover:border-gray-300'}`} style={isCustom ? {} : {}}>
+            <input type="color" value={customHex} onChange={e => setCustomColor(e.target.value)} className="w-8 h-8 rounded cursor-pointer border-0 p-0 bg-transparent" title="Custom color" />
+            <GoogleIcon icon="colorize" size={16} className="text-primary-600" />
+            Custom
+          </label>
         </div>
 
         <div className="pt-4 border-t border-gray-200">
