@@ -26,7 +26,6 @@ const CalendarPage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', participantId: '', startTime: '09:00', endTime: '10:00', message: '' });
 
-  const userMeetings = useMemo(() => getMeetingsForUser(user?.id ?? ''), [user?.id]);
   const dayMeetings = useMemo(
     () => getMeetingsByDate(user?.id ?? '', format(selectedDate, 'yyyy-MM-dd')),
     [user?.id, selectedDate],
@@ -285,9 +284,9 @@ const CalendarPage: React.FC = () => {
                     className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                  <div className="text-sm text-gray-500 pt-2">{format(selectedDate, 'MMM d, yyyy')}</div>
+                <div className="flex flex-col justify-end pb-1">
+                  <div className="text-sm font-medium text-gray-900">{format(selectedDate, 'EEEE')}</div>
+                  <div className="text-xs text-gray-500">{format(selectedDate, 'MMMM d, yyyy')}</div>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
