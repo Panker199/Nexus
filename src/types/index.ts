@@ -82,6 +82,8 @@ export interface NotificationItem {
   link?: string;
 }
 
+export type DocumentStatus = 'draft' | 'in_review' | 'signed';
+
 export interface Document {
   id: string;
   name: string;
@@ -91,6 +93,9 @@ export interface Document {
   shared: boolean;
   url: string;
   ownerId: string;
+  status: DocumentStatus;
+  signedBy?: string;
+  content?: string;
 }
 
 export interface Meeting {
